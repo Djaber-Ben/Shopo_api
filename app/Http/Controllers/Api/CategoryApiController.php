@@ -10,7 +10,15 @@ class CategoryApiController extends Controller
 {
     public function index()
     {
-        return response()->json(Category::all());
+        $categories = Category::with('stores')
+        ->where('status', 'active')
+        ->where('show', true)
+        ->get();
+
+        return response()->json([
+            'categories' => $categories,
+        ], 200);
+        // return response()->json(Category::all());
     }
 
     public function show($id)

@@ -9,7 +9,7 @@ class Category extends Model
 {
     protected $fillable = ['name', 'slug', 'image', 'status', 'show'];
 
-    public function store()
+    public function stores()
     {
         return $this->hasMany(Store::class);
     }
