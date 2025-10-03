@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             // $table->foreignId('city')->nullable()->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('logo')->nullable();
+            $table->string('image')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

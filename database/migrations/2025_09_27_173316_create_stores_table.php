@@ -20,15 +20,16 @@ return new class extends Migration
             $table->text('description')->nullable(); // Text column for description, nullable
             $table->string('logo')->nullable(); // String column for logo path or URL, nullable
             $table->string('image')->nullable(); // String column for image path or URL, nullable
-            $table->string('phone_number')->nullable(); // String column for phone number, nullable
-            $table->string('address')->nullable(); // String column for address, nullable
-            $table->decimal('latitude', 10, 8)->nullable(); // Decimal column for latitude, nullable
-            $table->decimal('longitude', 10, 8)->nullable(); // Decimal column for longitude, nullable
+            $table->string('phone_number'); // String column for phone number, nullable
+            $table->string('address'); // String column for address, nullable
+            $table->string('address_url'); // String column for address url, nullable
+            // $table->decimal('latitude', 10, 8)->nullable(); // Decimal column for latitude, nullable
+            // $table->decimal('longitude', 10, 8)->nullable(); // Decimal column for longitude, nullable
             $table->enum('status', ['active', 'inactive'])->default('active'); // ENUM column for status
             $table->dateTime('subscription_timer')->nullable(); // DateTime column for subscription timer, nullable
             $table->string('whatsapp')->nullable();
             $table->string('facebook')->nullable();
-            $table->string('Instagram')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('tiktok')->nullable();
             $table->timestamps();
         });

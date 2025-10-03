@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
@@ -22,7 +23,12 @@ class Store extends Model
         'subscription_timer',
         'whatsapp', 
         'facebook', 
-        'Instagram', 
+        'instagram', 
         'tiktok'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

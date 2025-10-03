@@ -13,9 +13,17 @@ use App\Http\Controllers\Api\CategoryApiController;
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
 
+        // user API
+        Route::get('/user/{id}', [AuthController::class, 'edit']);
+        Route::put('/user/{id}', [AuthController::class, 'update']);
+
         // Stores API
+        Route::get('/store', [StoreApiController::class, 'index'])->name('stores.index');
         Route::get('/store/create', [StoreApiController::class, 'create']);
         Route::post('/store', [StoreApiController::class, 'store']);
+        Route::get('/store/{id}', [StoreApiController::class, 'show']);
+        Route::put('/store/{id}', [StoreApiController::class, 'update']);
+        Route::delete('/store/{id}', [StoreApiController::class, 'destroy']);
     });
 
 
