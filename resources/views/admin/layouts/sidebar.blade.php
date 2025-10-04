@@ -33,6 +33,13 @@
                     </li>
                     
                     <li class="nav-item">
+                        <a href="{{ route('stores.index') }}" class="nav-link {{ request()->routeIs('stores.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <p>Store</p>
+                        </a>																
+                    </li>
+                    
+                    <li class="nav-item">
                         {{-- <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"> --}}
                             <i class="nav-icon fas fa-users"></i>
                             <p>Users</p>

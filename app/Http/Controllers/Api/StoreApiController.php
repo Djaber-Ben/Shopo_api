@@ -13,7 +13,9 @@ class StoreApiController extends Controller
      */
     public function index()
     {
-        $stores = Store::with('category')->get();
+        $stores = Store::with('category')
+        ->where('status', 'active')
+        ->get();
 
         return response()->json([
             'stores' => $stores,
@@ -146,7 +148,7 @@ class StoreApiController extends Controller
         // Prepare data for update
         $data = $request->only([
             'category_id', 'store_name', 'description',
-            'phone_number', 'address', 'whatsapp', 'facebook',
+            'phone_number', 'address', 'address_url', 'whatsapp', 'facebook',
             'instagram', 'tiktok'
         ]);
 

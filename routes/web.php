@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\Admin\AdminController;
@@ -38,5 +39,15 @@ Route::middleware(['admin'])->group(function () {
         Route::put('/sliders/{slider}', [SliderController::class, 'update'])->name('sliders.update');
         Route::delete('/sliders/{slider}', [SliderController::class, 'destroy'])->name('sliders.delete');
     ### Slider ###
+    
+    ### Store ###
+        Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+        // Route::get('/stores/create', [StoreController::class, 'create'])->name('stores.create');
+        // Route::post('/stores/upload', [StoreController::class, 'upload'])->name('stores.upload');
+        // Route::resource('stores', StoreController::class);
+        Route::get('/stores/{store}/edit', [StoreController::class, 'edit'])->name('stores.edit');
+        Route::put('/stores/{store}', [StoreController::class, 'update'])->name('stores.update');
+        // Route::delete('/stores/{store}', [StoreController::class, 'destroy'])->name('stores.delete');
+    ### Store ###
     
 });
