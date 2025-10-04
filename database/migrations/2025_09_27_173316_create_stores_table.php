@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('phone_number'); // String column for phone number, nullable
             $table->string('address'); // String column for address, nullable
             $table->string('address_url'); // String column for address url, nullable
-            // $table->decimal('latitude', 10, 8)->nullable(); // Decimal column for latitude, nullable
-            // $table->decimal('longitude', 10, 8)->nullable(); // Decimal column for longitude, nullable
+            $table->decimal('latitude', 10, 8)->nullable(); // Decimal column for latitude, nullable
+            $table->decimal('longitude', 10, 8)->nullable(); // Decimal column for longitude, nullable
             $table->enum('status', ['active', 'inactive'])->default('active'); // ENUM column for status
             $table->dateTime('subscription_timer')->nullable(); // DateTime column for subscription timer, nullable
             $table->string('whatsapp')->nullable();

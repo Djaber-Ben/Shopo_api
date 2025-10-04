@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\CategoryApiController;
         Route::put('/user/{id}', [AuthController::class, 'update']);
 
         // Stores API
+        // Display nearby stores.
+        Route::get('/store/nearby', [StoreController::class, 'nearby']);
+
         Route::get('/store', [StoreApiController::class, 'index'])->name('stores.index');
         Route::get('/store/create', [StoreApiController::class, 'create']);
         Route::post('/store', [StoreApiController::class, 'store']);

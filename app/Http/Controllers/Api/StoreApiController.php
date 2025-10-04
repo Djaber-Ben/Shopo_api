@@ -8,6 +8,40 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreApiController extends Controller
 {
+    
+    /**
+     * Display all avilable nearby stores.
+     */
+    public function nearby(Request $request)
+    {
+        $latitude = $request->query('latitude');
+        $longitude = $request->query('longitude');
+        $radius = $request->query('radius', 20); // default 20 km
+
+        if (!$latitude || !$longitude) {
+            return response()->json(['message' => 'Location coordinates required.'], 400);
+        }
+
+        $stores = Store::selectRaw("
+                *, 
+                (6371 * acos(cos(radians(?)) 
+                * cos(radians(latitude)) 
+                * cos(radians(longitude) - radians(?)) 
+                + sin(radians(?)) 
+                * sin(radians(latitude)))) AS distance
+            ", [$latitude, $longitude, $latitude])
+            ->having('distance', '<', $radius)
+            ->where('status', 'active')
+            ->orderBy('distance')
+            ->get();
+
+        return response()->json([
+            'user_location' => ['lat' => $latitude, 'lng' => $longitude],
+            'radius_km' => $radius,
+            'stores' => $stores,
+        ]);
+    }
+
     /**
      * Display all avilable stores.
      */
@@ -22,23 +56,37 @@ class StoreApiController extends Controller
         ], 200);
     }
 
+    
     /**
      * Return the authenticated user and all available categories.
-     */
+    */
     public function create()
     {
         $user = Auth::user();
         $categories = Category::all();
-
+        
         return response()->json([
             'user' => $user,
             'categories' => $categories,
         ], 200);
     }
-
+    
+    // Extract lat/lng from the Google Maps link
+    public function extractCoordinates($mapUrl)
+    {
+        if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $mapUrl, $matches) ||
+        preg_match('/q=(-?\d+\.\d+),(-?\d+\.\d+)/', $mapUrl, $matches)) {
+            return [
+                'latitude' => $matches[1],
+                'longitude' => $matches[2],
+            ];
+        }
+        return null;
+    }
+    
     /**
      * Store a newly created store in the database.
-     */
+    */
     public function store(Request $request)
     {
         // Validate the request
@@ -72,9 +120,17 @@ class StoreApiController extends Controller
                 'message' => 'Only clients or pending users can become vendors, you already have been a vendor and you have a store',
             ], 403);
         }
-
+        
         // Update user_type to vendor
         $user->update(['user_type' => 'vendor']);
+        
+        // Extract lat/lng from the Google Maps link
+        // Then save to the store
+        $coords = $this->extractCoordinates($request->address_url);
+        if ($coords) {
+            $store->latitude = $coords['latitude'];
+            $store->longitude = $coords['longitude'];
+        }
 
         // Create the store
         $store = Store::create([
@@ -87,8 +143,8 @@ class StoreApiController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'address_url' => $request->address_url,
-            // 'latitude' => $request->latitude,
-            // 'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'status' => 'active', // Default status
             'whatsapp' => $request->whatsapp,
             'facebook' => $request->facebook,
@@ -145,10 +201,18 @@ class StoreApiController extends Controller
             ], 422);
         }
 
+        // Extract lat/lng from the Google Maps link
+        // Then save to the store
+        $coords = $this->extractCoordinates($request->address_url);
+        if ($coords) {
+            $store->latitude = $coords['latitude'];
+            $store->longitude = $coords['longitude'];
+        }
+
         // Prepare data for update
         $data = $request->only([
             'category_id', 'store_name', 'description',
-            'phone_number', 'address', 'address_url', 'whatsapp', 'facebook',
+            'phone_number', 'address', 'address_url', 'latitude', 'longitude', 'whatsapp', 'facebook',
             'instagram', 'tiktok'
         ]);
 
