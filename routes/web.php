@@ -23,18 +23,19 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
         Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
         Route::post('/categories/upload', [CategoryController::class, 'upload'])->name('categories.upload');
-        Route::resource('categories', CategoryController::class);
-        // Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+        // Route::resource('categories', CategoryController::class);
+        Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
-    ### Category ###
-
-    ### Slider ###
+        ### Category ###
+        
+        ### Slider ###
         Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
         Route::get('/sliders/create', [SliderController::class, 'create'])->name('sliders.create');
         Route::post('/sliders/upload', [SliderController::class, 'upload'])->name('sliders.upload');
-        Route::resource('sliders', SliderController::class);
+        // Route::resource('sliders', SliderController::class);
+        Route::post('/sliders/store', [SliderController::class, 'store'])->name('sliders.store');
         Route::get('/sliders/{slider}/edit', [SliderController::class, 'edit'])->name('sliders.edit');
         Route::put('/sliders/{slider}', [SliderController::class, 'update'])->name('sliders.update');
         Route::delete('/sliders/{slider}', [SliderController::class, 'destroy'])->name('sliders.delete');

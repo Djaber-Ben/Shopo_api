@@ -14,6 +14,19 @@ class StoreApiController extends Controller
      */
     public function nearby(Request $request)
     {
+        $validator = Validator::make($request->query(), [
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'radius' => 'nullable|numeric|min:1|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Invalid location coordinates or radius',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
         $latitude = $request->query('latitude');
         $longitude = $request->query('longitude');
         $radius = $request->query('radius', 20); // default 20 km
@@ -23,17 +36,22 @@ class StoreApiController extends Controller
         }
 
         $stores = Store::selectRaw("
-                *, 
-                (6371 * acos(cos(radians(?)) 
-                * cos(radians(latitude)) 
-                * cos(radians(longitude) - radians(?)) 
-                + sin(radians(?)) 
+                *,
+                (6371 * acos(cos(radians(?))
+                * cos(radians(latitude))
+                * cos(radians(longitude) - radians(?))
+                + sin(radians(?))
                 * sin(radians(latitude)))) AS distance
             ", [$latitude, $longitude, $latitude])
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
             ->having('distance', '<', $radius)
             ->where('status', 'active')
+            ->with(['products' => function ($query) {
+                $query->where('status', 'active');
+            }])
             ->orderBy('distance')
-            ->get();
+            ->paginate(20);
 
         return response()->json([
             'user_location' => ['lat' => $latitude, 'lng' => $longitude],
@@ -49,6 +67,9 @@ class StoreApiController extends Controller
     {
         $stores = Store::with('category')
         ->where('status', 'active')
+        ->with(['products' => function ($query) {
+            $query->where('status', 'active');
+        }])
         ->get();
 
         return response()->json([
@@ -74,15 +95,49 @@ class StoreApiController extends Controller
     // Extract lat/lng from the Google Maps link
     public function extractCoordinates($mapUrl)
     {
-        if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $mapUrl, $matches) ||
-        preg_match('/q=(-?\d+\.\d+),(-?\d+\.\d+)/', $mapUrl, $matches)) {
-            return [
-                'latitude' => $matches[1],
-                'longitude' => $matches[2],
-            ];
+        // Match patterns like @40.7128,-74.0060 or q=40.7128,-74.0060
+        if (preg_match('/@(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches) ||
+            preg_match('/q=(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches)) {
+            $latitude = (float) $matches[1];
+            $longitude = (float) $matches[2];
+
+            // Validate coordinate ranges
+            if ($latitude >= -90 && $latitude <= 90 && $longitude >= -180 && $longitude <= 180) {
+                return [
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                ];
+            }
         }
         return null;
     }
+
+    // public function extractCoordinates($mapUrl)
+    // {
+    //     // Match various Google Maps URL formats
+    //     $patterns = [
+    //         '/@(-?\d+\.\d{0,8}),(-?\d+\.\d{0,8})/', // @latitude,longitude
+    //         '/[?&]query=(-?\d+\.\d{0,8}),(-?\d+\.\d{0,8})/', // query=latitude,longitude
+    //         '/!3d(-?\d+\.\d{0,8})!4d(-?\d+\.\d{0,8})/', // !3dlatitude!4dlongitude
+    //     ];
+
+    //     foreach ($patterns as $pattern) {
+    //         if (preg_match($pattern, $mapUrl, $matches)) {
+    //             $latitude = (float) $matches[1];
+    //             $longitude = (float) $matches[2];
+
+    //             // Validate coordinate ranges
+    //             if ($latitude >= -90 && $latitude <= 90 && $longitude >= -180 && $longitude <= 180) {
+    //                 return [
+    //                     'latitude' => $latitude,
+    //                     'longitude' => $longitude,
+    //                 ];
+    //             }
+    //         }
+    //     }
+
+    //     return null;
+    // }
     
     /**
      * Store a newly created store in the database.
@@ -128,8 +183,8 @@ class StoreApiController extends Controller
         // Then save to the store
         $coords = $this->extractCoordinates($request->address_url);
         if ($coords) {
-            $store->latitude = $coords['latitude'];
-            $store->longitude = $coords['longitude'];
+            $latitude = $coords['latitude'];
+            $longitude = $coords['longitude'];
         }
 
         // Create the store
@@ -143,8 +198,8 @@ class StoreApiController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'address_url' => $request->address_url,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
             'status' => 'active', // Default status
             'whatsapp' => $request->whatsapp,
             'facebook' => $request->facebook,

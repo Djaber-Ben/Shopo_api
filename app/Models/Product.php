@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Store;
 use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +30,10 @@ class Product extends Model
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 }
