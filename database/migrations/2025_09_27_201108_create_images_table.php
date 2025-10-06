@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key (int)
             $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Foreign key to products table
-            $table->string('path'); // String column for image path or URL
+            $table->string('image'); // String column for image path or URL
             $table->boolean('is_primary')->default(false); // Boolean to mark primary image
             $table->timestamps();
         });

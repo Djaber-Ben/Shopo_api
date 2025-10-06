@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id(); // Auto-incrementing primary key (int)
             $table->foreignId('store_id')->constrained()->onDelete('cascade'); // Foreign key to stores table
             $table->string('title'); // String column for product title
-            $table->string('slug')->nullable()->unique(); // String column for slug, unique to avoid duplicates
+            // $table->string('slug')->nullable()->unique(); // String column for slug, unique to avoid duplicates
             $table->string('image')->nullable(); // String column for primary image, nullable
             $table->text('description')->nullable(); // Text column for description, nullable
-            $table->text('shipping_returns')->nullable(); // Text column for shipping and returns, nullable
+            // $table->text('shipping_returns')->nullable(); // Text column for shipping and returns, nullable
             $table->text('related_products')->nullable(); // Text column for related products, nullable
             $table->double('price'); // Double column for price
             $table->double('compare_price')->nullable(); // Double column for compare price, nullable

@@ -22,7 +22,7 @@ use App\Http\Controllers\Api\CategoryApiController;
         // Stores API
         Route::get('/store/create', [StoreApiController::class, 'create']);
         Route::post('/store/store', [StoreApiController::class, 'store']);
-        Route::get('/store/{id}', [StoreApiController::class, 'show']);
+        Route::get('/store/{id}', [StoreApiController::class, 'edit']);
         Route::put('/store/{id}', [StoreApiController::class, 'update']);
         Route::delete('/store/{id}', [StoreApiController::class, 'destroy']);
         
@@ -30,20 +30,22 @@ use App\Http\Controllers\Api\CategoryApiController;
         // Products API
         Route::get('/product/create', [ProductApiController::class, 'create']);
         Route::post('/product/store', [ProductApiController::class, 'store']);
-        Route::get('/product/{id}', [ProductApiController::class, 'show']);
+        Route::get('/product/{id}', [ProductApiController::class, 'edit']);
         Route::put('/product/{id}', [ProductApiController::class, 'update']);
         Route::delete('/product/{id}', [ProductApiController::class, 'destroy']);
     });
     
-// Stores API
+    // Stores API
     // Display nearby stores.
     Route::get('/store/nearby', [StoreController::class, 'nearby']);
+    Route::get('/store/{id}', [StoreApiController::class, 'show']);
     // Display all stores randomly.
     Route::get('/store', [StoreApiController::class, 'index']);
-
-// Products API
+    
+    // Products API
     // Display all products of the store.
     Route::get('/product', [ProductApiController::class, 'index']);
+    Route::get('/product/{id}', [ProductApiController::class, 'show']);
 
 // Categories API
     Route::get('/categories', [CategoryApiController::class, 'index']);

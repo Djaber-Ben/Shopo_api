@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Store;
+use App\Models\Images;
 use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,11 @@ class Product extends Model
         'track_qty', 
         'status'
     ];
+
+    public function images()
+    {
+        return $this->hasMany(Images::class);
+    }
 
     public function wishlist()
     {

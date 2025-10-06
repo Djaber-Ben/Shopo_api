@@ -214,11 +214,24 @@ class StoreApiController extends Controller
     }
 
     /**
-     * Display the specified store.
+     * Display the specified store only for the store owner.
+     */
+    public function edit($id)
+    {
+        $store = Store::where('vendor_id', Auth::id())->with('category')->findOrFail($id);
+
+        return response()->json([
+            'store' => $store,
+        ], 200);
+    }
+    
+    /**
+     * Display the specified store to all users.
      */
     public function show($id)
     {
-        $store = Store::where('vendor_id', Auth::id())->with('category')->findOrFail($id);
+        $store = Store::with('category')
+        ->findOrFail($id);
 
         return response()->json([
             'store' => $store,
