@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SliderApiController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\CategoryApiController;
 use App\Http\Controllers\Api\WishlistApiController;
+use App\Http\Controllers\Api\ConversationApiController;
 
 
 // User Authentication API
@@ -39,6 +40,11 @@ use App\Http\Controllers\Api\WishlistApiController;
         Route::get('/wishlist', [WishlistApiController::class, 'index'])->name('wishlist.index');
         Route::post('/wishlist/store', [WishlistApiController::class, 'store'])->name('wishlist.store');
         Route::delete('/wishlist/{product_id}', [WishlistApiController::class, 'destroy'])->name('wishlist.destroy');
+
+        Route::get('/conversations', [ConversationApiController::class, 'index'])->name('conversations.index');
+        Route::post('/conversations/start', [ConversationApiController::class, 'startConversation'])->name('conversations.start');
+        Route::post('/conversations/{id}/send-message', [ConversationApiController::class, 'sendMessage'])->name('conversations.send');
+        Route::get('/conversations/{id}/messages', [ConversationApiController::class, 'getMessages'])->name('conversations.messages');
     });
     
     // Stores API

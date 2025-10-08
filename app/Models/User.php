@@ -27,6 +27,16 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 
+    public function clientConversations()
+    {
+        return $this->hasMany(Conversation::class, 'client_id');
+    }
+
+    public function vendorConversations()
+    {
+        return $this->hasMany(Conversation::class, 'vendor_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
