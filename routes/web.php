@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OfflinePaymentController;
 use App\Http\Controllers\Auth\Admin\AdminController;
+use App\Http\Controllers\SubscriptionPlanController;
 
 
 // Route::group(['middleware' => 'guest'], function(){
@@ -28,9 +30,9 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
-        ### Category ###
-        
-        ### Slider ###
+    ### Category ###
+    
+    ### Slider ###
         Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
         Route::get('/sliders/create', [SliderController::class, 'create'])->name('sliders.create');
         Route::post('/sliders/upload', [SliderController::class, 'upload'])->name('sliders.upload');
@@ -50,5 +52,20 @@ Route::middleware(['admin'])->group(function () {
         Route::put('/stores/{store}', [StoreController::class, 'update'])->name('stores.update');
         // Route::delete('/stores/{store}', [StoreController::class, 'destroy'])->name('stores.delete');
     ### Store ###
+    
+    ### Payment info ###
+    Route::get('/offline-payments', [OfflinePaymentController::class, 'index'])->name('offline-payments.index');
+    Route::get('/offline-payments/{id}/edit', [OfflinePaymentController::class, 'edit'])->name('offline-payments.edit');
+    Route::post('/offline-payments', [OfflinePaymentController::class, 'update'])->name('offline-payments.update');
+    ### Payment info ###
+    
+    ### Subscription plans ###
+    Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index'])->name('subscription-plans.index');
+    Route::get('/subscription-plans/create', [SubscriptionPlanController::class, 'create'])->name('subscription-plans.create');
+    Route::post('/subscription-plans/store', [SubscriptionPlanController::class, 'store'])->name('subscription-plans.store');
+    Route::get('/subscription-plans/{plan}/edit', [SubscriptionPlanController::class, 'edit'])->name('subscription-plans.edit');
+    Route::put('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'update'])->name('subscription-plans.update');
+    Route::delete('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'destroy'])->name('subscription-plans.delete');
+    ### Subscription plans ###
     
 });

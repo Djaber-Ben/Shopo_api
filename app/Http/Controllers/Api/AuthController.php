@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'phone_number' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:13',
         ]);
 
         if ($validator->fails()) {

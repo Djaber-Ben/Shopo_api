@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Slider extends Model
+class OfflinePayment extends Model
 {
     use HasFactory, SoftDeletes;
     
-    protected $fillable = ['slider_image', 'title', 'link'];
+    protected $fillable = [
+        'name', 'family_name', 'ccp_number', 'cle', 'rip', 'address'
+    ];
 }

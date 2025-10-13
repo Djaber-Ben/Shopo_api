@@ -45,7 +45,7 @@ class SliderController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255|unique:sliders,title',
-            'link' => 'required',
+            'link' => 'nullable',
             'status' => 'required',
             'image' => 'required|string', // comes from hidden input
         ]);

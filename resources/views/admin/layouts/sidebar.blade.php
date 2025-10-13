@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-        {{-- <img src="{{ asset('admin-assets/img/') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
+        <img src="{{ asset('admin-assets/img/shopo.jpg') }}" alt="Shopo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SHOPO</span>
     </a>
     <!-- Sidebar -->
@@ -36,6 +36,20 @@
                         <a href="{{ route('stores.index') }}" class="nav-link {{ request()->routeIs('stores.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-file-alt"></i>
                             <p>Store</p>
+                        </a>																
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('offline-payments.index') }}" class="nav-link {{ request()->routeIs('offline-payments.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <p>Payment Info</p>
+                        </a>																
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('subscription-plans.index') }}" class="nav-link {{ request()->routeIs('subscription-plans.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <p>Subscription Plans</p>
                         </a>																
                     </li>
                     

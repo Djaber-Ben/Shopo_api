@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'inactive'])->default('active'); // ENUM column for status
             $table->boolean('show')->default(true); // Boolean column for visibility
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

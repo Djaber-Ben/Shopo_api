@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Foreign key to products table
             $table->unique(['user_id', 'product_id']); // Composite unique constraint to prevent duplicate wishlist entries
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

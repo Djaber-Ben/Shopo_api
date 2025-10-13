@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image')->nullable(); // optional for product/image attachments
             $table->boolean('is_read')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

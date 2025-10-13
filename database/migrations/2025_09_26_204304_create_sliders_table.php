@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('slider_image'); // String column for slider_image
             $table->string('title'); // String column for title
-            $table->string('link'); // String column for link
+            $table->string('link')->nullable(); // String column for link
             $table->boolean('status')->nullable()->default(true); // Boolean column for status
             $table->timestamps(); // Adds created_at and updated_at columns
+            $table->softDeletes();
         });
     }
 

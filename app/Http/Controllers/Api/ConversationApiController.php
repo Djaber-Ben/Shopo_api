@@ -88,7 +88,7 @@ class ConversationApiController extends Controller
         $conversation->update(['last_message_at' => now()]);
 
         // Broadcast event
-        broadcast(new NewMessageEvent($message))->toOthers();
+        // broadcast(new NewMessageEvent($message))->toOthers();
 
         $conversation->load(['messages', 'product', 'client', 'vendor']);
 
@@ -130,7 +130,7 @@ class ConversationApiController extends Controller
         $conversation->update(['last_message_at' => now()]);
 
         // Broadcast event
-        broadcast(new NewMessageEvent($message))->toOthers();
+        // broadcast(new NewMessageEvent($message))->toOthers();
 
         return response()->json([
             'message' => 'Message sent',

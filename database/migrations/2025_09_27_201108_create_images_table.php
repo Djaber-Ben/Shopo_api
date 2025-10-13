@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image'); // String column for image path or URL
             $table->boolean('is_primary')->default(false); // Boolean to mark primary image
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

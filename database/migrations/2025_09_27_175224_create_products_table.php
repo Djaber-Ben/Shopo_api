@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image')->nullable(); // String column for primary image, nullable
             $table->text('description')->nullable(); // Text column for description, nullable
             // $table->text('shipping_returns')->nullable(); // Text column for shipping and returns, nullable
-            $table->text('related_products')->nullable(); // Text column for related products, nullable
+            // $table->text('related_products')->nullable(); // Text column for related products, nullable
             $table->double('price'); // Double column for price
             $table->double('compare_price')->nullable(); // Double column for compare price, nullable
             // $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null'); // Foreign key to categories table, nullable
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->enum('track_qty', ['yes', 'no'])->default('yes'); // ENUM column for tracking quantity
             $table->enum('status', ['active', 'inactive', 'out_of_stock'])->default('active'); // ENUM column for status
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
