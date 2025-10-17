@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('store_id')->constrained()->onDelete('cascade');
             $table->foreignId('subscription_plan_id')->constrained()->onDelete('cascade');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date')->useCurrent();
-            $table->enum('status', ['active', 'expired', 'cancelled'])->default('active');
+            $table->string('payment_receipt_image')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->enum('status', ['active', 'expired', 'cancelled', 'pending'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });

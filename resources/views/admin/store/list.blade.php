@@ -41,11 +41,13 @@
                         <thead>
                             <tr>
                                 <th width="60">ID</th>
-                                <th>Name</th>
-                                {{-- <th>Slug</th> --}}
-                                <th>Logo</th>
+                                <th width="100">Name</th>
+                                {{-- <th width="100">Slug</th> --}}
+                                <th width="100">Logo</th>
                                 <th width="100">Status</th>
-                                <th width="100">Action</th>
+                                <th width="100">Plan Name</th>
+                                <th width="100">Subscription</th>
+                                <th width="50">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -73,6 +75,8 @@
                                                 </svg>
                                             @endif
                                         </td>
+                                        <td>{{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}</td>
+                                        <td>{{ $store->subscriptions->first()->status ?? 'No subscription' }}</td>
                                         <td>
                                             <a href="{{ route('stores.edit',$store->id) }}">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

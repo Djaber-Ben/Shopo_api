@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0.00);
             $table->decimal('compare_price', 10, 2)->nullable();
-            $table->enum('duration', ['daily', 'monthly', 'yearly']);
+            // $table->enum('duration', ['daily', 'monthly', 'yearly']);
             $table->integer('duration_days');
             $table->boolean('is_trial')->default(false);
             $table->enum('status', ['active', 'inactive'])->default('active');

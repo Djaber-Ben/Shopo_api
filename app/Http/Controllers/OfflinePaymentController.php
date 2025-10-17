@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Validator;
 class OfflinePaymentController extends Controller
 {
     /**
-     * Display the specified offline payment to the store owners via API.
+     * Display the offline payment to the store owners via API.
      */
     public function show($id)
     {
-        $payment = OfflinePayment::findOrFail($id);
+        $payment = OfflinePayment::first();
 
         return response()->json([
             'payment' => $payment,

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Store;
+use App\Models\OfflinePayment;
+use App\Models\SubscriptionPlan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +14,7 @@ class StoreSubscription extends Model
     use HasFactory, SoftDeletes;
     
     protected $fillable = [
-        'store_id', 'subscription_plan_id', 'start_date', 'end_date', 'status'
+        'store_id', 'subscription_plan_id', 'payment_receipt_image', 'start_date', 'end_date', 'status'
     ];
 
     public function store()

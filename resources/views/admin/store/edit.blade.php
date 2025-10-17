@@ -19,34 +19,16 @@
 <section class="content">
     <!-- Default box -->
     <div class="container-fluid">
-        <form action="{{ route('stores.update', $store->id) }}" 
-              method="post" 
-              enctype="multipart/form-data" 
-              id="storeForm">
-            @csrf
-             @method('PUT')
-            <div class="card">
-                <div class="card-body">                                
-                    <div class="row">
-                        {{-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" value="{{ $store->name }}" class="form-control" placeholder="Name">
-                                <p></p>    
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="image">Image</label>
-                                <div id="imageUpload" class="dropzone"></div>
-                                <input type="hidden" name="image" id="image"> {{-- store filename --}}
-                                {{-- </div>
-                                @if(!empty($store->image))
-                                <div>
-                                    <img width="250" src="{{ asset('storage/'.$store->image) }}" alt="">
-                                </div>
-                                @endif
-                            </div>                                 --}}
+        <div class="row">
+            {{-- <form action="{{ route('stores.update', $store->id) }}" 
+                method="post" 
+                enctype="multipart/form-data" 
+                id="storeForm">
+                @csrf
+                @method('PUT')
+                <div class="card">
+                    <div class="card-body">                                
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="status">Status</label>    
@@ -57,23 +39,127 @@
                                     <p></p>    
                                 </div>
                             </div>
-                        {{-- <div class="col-md-6">
+                        </div>
+                    </div>                            
+                </div>
+                <div class="pb-5 pt-3">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('stores.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                </div>
+            </form> --}}
+            <div class="col-md-8">
+                @include('admin.message')
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <div class="row invoice-info">
+                            <div class="col-sm-12 invoice-col">
+                                <h1 class="h5 mb-3">store Info</h1>
+                                <p>
+                                    Name: <strong>{{ $store->store_name}}</strong><br>
+                                    Phone Number: <strong>{{ $store->phone_number }}</strong><br>
+                                    Address: <strong>{{ $store->address_url }}</strong><br>
+                                    Date Created:
+                                    <strong>
+                                        @if (!empty($store->created_at))
+                                        {{ \Carbon\Carbon::parse($store->created_at)->format('d M, Y') }}
+                                        @else
+                                        N/A
+                                        @endif
+                                    </strong>
+                                    <br>
+                                    Store Status: <strong> {{ ($store->status) }}</strong>
+                                </p>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="mb-3">
+                                    <p></p>    
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>                           
+                </div>
+                <div class="card">
+                    <div class="card-header pt-3">
+                        <div class="row invoice-info">
+                            <div class="col-sm-9 invoice-col">
+                                {{-- <div class="card"> --}}
+                                    {{-- <div class="card-body"> --}}
+                                        <h1 class="h5 mb-3">Store Subscriptions</h1>
+                                        <b>Store Subscription ID:</b> {{ $store->subscriptions->first()->id ?? 'No Subscription' }}<br>
+                                        <b>Store Subscription Plan:</b> {{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}<br>
+                                        <b>Store Subscription Price:</b> {{ $store->subscriptions->first()->subscriptionPlan->price ?? 'No plan' }}<br>
+                                        <b>Subscription Plan Status:</b> {{ $store->subscriptions->first()->subscriptionPlan->status ?? 'No plan' }}<br>
+                                        <b>Store Subscription Payment Receipt Image:</b>
+                                            @if(!empty($store->subscriptions->first()->payment_receipt_image))
+                                                <div>
+                                                    <img width="250" src="{{ asset('storage/'.$store->subscriptions->payment_receipt_image) }}" alt="">
+                                                </div>
+                                            @endif
+                                        <br>
+                                        <b>Store Subscription Status:</b>
+                                            @if(!empty($store->subscriptions->first()->status))
+                                                @if ($store->subscriptions->first()->status == 'expired' ?? 'No Subscription')
+                                                    <span class="text-muted"><strong> Expired </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'cancelled' ?? 'No Subscription')
+                                                    <span class="text-info"><strong> Cancelled </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'pending' ?? 'No Subscription')
+                                                    <span class="text-danger"><strong> Pending </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'active' ?? 'No Subscription')
+                                                    <span class="text-success"><strong> Active </strong></span>
+                                                @endif
+                                            @endif
+                                        <br>
+                                    {{-- </div> --}}
+                                {{-- </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <form action="{{ route('stores.update', $store->id) }}" method="post" id="storeForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="card-body">
                             <div class="mb-3">
-                                <label for="show">Show on Home</label>    
-                                <select name="show" id="show" class="form-control">
-                                    <option {{ ($store->show == '1') ? 'selected' : '' }} value="1">Yes</option>
-                                    <option {{ ($store->show == '0') ? 'selected' : '' }} value="0">No</option>
+                                <h2 class="h4 mb-3" for="status">Store Status</h2>   
+                                <select name="status" id="status" class="form-control">
+                                    <option value="active" {{ ($store->status == 'active') ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ ($store->status == 'inactive') ? 'selected' : '' }}>Block</option>
+                                </select>
+                                <p></p>    
+                            </div>
+                            <h2 class="h4 mb-3">Store Subscription Status</h2>
+                            <div class="mb-3">
+                                <select name="subscription_status" class="form-control">
+                                    <option value="">Select a Store Subscription Status</option>
+                                    @if(!empty($store->subscriptions->first()))
+                                        <option value="active" {{ $store->subscriptions->first()->status == 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="pending" {{ $store->subscriptions->first()->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="cancelled" {{ $store->subscriptions->first()->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    @endif
                                 </select>
                             </div>
-                        </div>                                      --}}
-                    </div>
-                </div>                            
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ route('stores.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="pb-5 pt-3">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('stores.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
-            </div>
-        </form>
+        </div>
     </div>
     <!-- /.card -->
 </section>
@@ -83,36 +169,6 @@
 @section('customJs')
 <script>
 
-// Handle form submit
-$("#storeForm").submit(function(event){
-    event.preventDefault();
-    var formData = $(this).serialize();
 
-    $.ajax({
-        url: "{{ route('stores.update', $store->id) }}",
-        type: 'Post',
-        data: formData,
-        dataType: 'json',
-        success: function(response){
-            if(response.status === true){
-                window.location.href = "{{ route('stores.index') }}";
-            } else {
-                var errors = response.errors;
-                if(errors.name){
-                    $('#status').addClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html(errors.status);
-                } else {
-                    $('#status').removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
-                }
-            }
-        },
-        error: function(jqXHR){
-            console.log("Error:", jqXHR.responseText);
-        }
-    });
-});
 </script>
 @endsection

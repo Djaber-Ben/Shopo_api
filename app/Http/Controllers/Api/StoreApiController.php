@@ -2,8 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
+use Carbon\Carbon;
+use App\Models\Store;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\OfflinePayment;
+use Illuminate\Validation\Rule;
+use App\Models\SubscriptionPlan;
+use App\Models\StoreSubscription;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -147,20 +157,43 @@ class StoreApiController extends Controller
     {
         // Validate the request
         $validator = Validator::make($request->all(), [
+            // subscription plan
+            'subscription_plan_id' => [
+                'required',
+                Rule::exists('subscription_plans', 'id')->where('status', 'active'),
+            ],
+            // store subscription
+            'payment_receipt_image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:2048',
+                function ($attribute, $value, $fail) use ($request) {
+                    $plan = SubscriptionPlan::find($request->subscription_plan_id);
+                    if ($plan && !$plan->is_trial && !$request->hasFile('payment_receipt_image')) {
+                        $fail('The payment receipt image is required for non-trial plans.');
+                    }
+                },
+            ],
             'category_id' => 'required|exists:categories,id',
             'store_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
             'address' => 'required|string|max:500',
-            'address_url' => 'required|url|max:500',
-            // 'latitude' => 'required|numeric|between:-90,90',
-            // 'longitude' => 'required|numeric|between:-180,180',
+            'address_url' => 'required|url|max:500|regex:/^https:\/\/(www\.google\.com\/maps|maps\.app\.goo\.gl|goo\.gl\/maps|apple\.com\/maps)/',
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'whatsapp' => 'nullable|url|max:255',
-            'facebook' => 'nullable|url|max:255',
-            'instagram' => 'nullable|url|max:255',
-            'tiktok' => 'nullable|url|max:255',
+            'whatsapp' => 'nullable|url|max:255|regex:/^https:\/\/(wa\.me|api\.whatsapp\.com)/',
+            'facebook' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?facebook\.com/',
+            'instagram' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?instagram\.com/',
+            'tiktok' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?tiktok\.com/',
+        ], [
+            'subscription_plan_id.exists' => 'The selected subscription plan is invalid or not active.',
+            'address_url.regex' => 'The address URL must be a valid Google Maps URL.',
+            'whatsapp.regex' => 'The WhatsApp URL must be a valid WhatsApp link.',
+            'facebook.regex' => 'The Facebook URL must be a valid Facebook link.',
+            'instagram.regex' => 'The Instagram URL must be a valid Instagram link.',
+            'tiktok.regex' => 'The TikTok URL must be a valid TikTok link.',
         ]);
         
         if ($validator->fails()) {
@@ -178,40 +211,100 @@ class StoreApiController extends Controller
         }
         
         // Update user_type to vendor
-        $user->update(['user_type' => 'vendor']);
+        try {
+            $user->update(['user_type' => 'vendor']);
+        } catch (\Exception $e) {
+            Log::error('Failed to update user type: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to update user type.'], 500);
+        }
         
         // Extract lat/lng from the Google Maps link
         // Then save to the store
         $coords = $this->extractCoordinates($request->address_url);
-        if ($coords) {
-            $latitude = $coords['latitude'];
-            $longitude = $coords['longitude'];
+        $latitude = $coords['latitude'] ?? null;
+        $longitude = $coords['longitude'] ?? null;
+
+        try{
+            // Create the store
+            $store = Store::create([
+                'vendor_id' => $user->id, // Set to authenticated user's ID
+                'category_id' => $request->category_id,
+                'store_name' => $request->store_name,
+                'description' => $request->description,
+                'logo' => $request->hasFile('logo') ? $request->file('logo')->store('images/stores/logos', 'public') : null,
+                'image' => $request->hasFile('image') ? $request->file('image')->store('images/stores/thumbnails', 'public') : null,
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'address_url' => $request->address_url,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'status' => 'active', // Default status
+                'whatsapp' => $request->whatsapp,
+                'facebook' => $request->facebook,
+                'instagram' => $request->instagram,
+                'tiktok' => $request->tiktok,
+            ]);
+        } catch (Exception $e) {
+            Log::error('Failed to create store: ' . $e->getMessage());
+            // Rollback user type update
+            $user->update(['user_type' => 'client']);
+            return response()->json(['message' => 'Failed to create store.'], 500);
         }
 
-        // Create the store
-        $store = Store::create([
-            'vendor_id' => $user->id, // Set to authenticated user's ID
-            'category_id' => $request->category_id,
-            'store_name' => $request->store_name,
-            'description' => $request->description,
-            'logo' => $request->hasFile('logo') ? $request->file('logo')->store('images/stores/logos', 'public') : null,
-            'image' => $request->hasFile('image') ? $request->file('image')->store('images/stores/thumbnails', 'public') : null,
-            'phone_number' => $request->phone_number,
-            'address' => $request->address,
-            'address_url' => $request->address_url,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'status' => 'active', // Default status
-            'whatsapp' => $request->whatsapp,
-            'facebook' => $request->facebook,
-            'instagram' => $request->instagram,
-            'tiktok' => $request->tiktok,
-        ]);
+        // Fetch subscription plan
+        $subscriptionPlan = SubscriptionPlan::where('id', $request->subscription_plan_id)
+            ->where('status', 'active')
+            ->firstOrFail();
 
-        return response()->json([
-            'message' => 'Store created successfully',
-            'store' => $store,
-        ], 201);
+        // Handle subscription
+        try {
+
+            if ($subscriptionPlan->is_trial) {
+                $start = Carbon::now();
+                $end = $start->copy()->addDays($subscriptionPlan->duration_days);
+                $store->update(['subscription_expires_at' => $end]);
+
+                $subscription = StoreSubscription::create([
+                    'store_id' => $store->id,
+                    'subscription_plan_id' => $subscriptionPlan->id,
+                    'start_date' => $start,
+                    'end_date' => $end,
+                    'status' => 'active',
+                ]);
+
+                return response()->json([
+                    'message' => 'Store created successfully with trial subscription until ' . $end->toFormattedDateString(),
+                    'store' => $store,
+                    'subscription' => $subscription,
+                ], 201);
+
+            } else {
+                $store->update(['status' => 'inactive']);
+
+                // recive the offline payment receipt image from the store owners
+                $payment_receipt_image = null;
+                if ($request->hasFile('payment_receipt_image')) {
+                    $payment_receipt_image = $request->file('payment_receipt_image')->store('images/storeSubscriptions/payment_receipt_image', 'public');
+                }
+
+                $subscription = StoreSubscription::create([
+                    'store_id' => $store->id,
+                    'subscription_plan_id' => $subscriptionPlan->id,
+                    'payment_receipt_image' => $payment_receipt_image,
+                    'status' => 'pending',
+                ]);
+
+                return response()->json([
+                    'message' => 'Store and subscription created successfully, but the store is inactive and the subscription is pending. The admin will activate them once your payment receipt Image is approved.',
+                    'store' => $store,
+                    'subscription' => $subscription,
+                ], 201);
+            }
+            
+        } catch (\Exception $e) {
+            $store->delete(); // Rollback store creation on failure
+            return response()->json(['message' => 'Failed to create subscription.'], 500);
+        }
     }
 
     /**
