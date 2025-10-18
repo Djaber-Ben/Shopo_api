@@ -16,12 +16,12 @@
 		<div class="login-box">
 			<!-- /.login-logo -->
 			{{-- @include('admin.message') --}}
-			<div class="card card-outline card-primary">
+			<div class="card card-outline card-info">
 			  	<div class="card-header text-center">
-					<a href="#" class="h3">Administrative Panel</a>
+					<a href="#" class="h3">Reset Password</a>
 			  	</div>
 			  	<div class="card-body">
-					<p class="login-box-msg">Sign in to start your session</p>
+					<p class="login-box-msg">enter your new password and confirm it</p>
 					{{-- @if ($errors->any())
 						<div class="alert alert-danger">
 							<ul>
@@ -31,48 +31,36 @@
 							</ul>
 						</div>
 					@endif --}}
-					<form action="{{ route('admin.authenticate') }}" method="post">
+					<form method="POST" action="{{ route('admin.resetPassword') }}">
 						@csrf
-				  		<div class="input-group mb-3">
-							<input type="email" value="{{ old('email') }}" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email">
+
+						<input type="hidden" name="token" value="{{ $token }}">
+						<input type="hidden" name="email" value="{{ $email }}">
+
+						<div class="input-group mb-3">
+							{{-- <label>New Password</label> --}}
+							<input type="password" name="password" class="form-control" placeholder="New Password" required>
 							<div class="input-group-append">
 					  			<div class="input-group-text">
-									<span class="fas fa-envelope"></span>
+									<span class="fas fa-unlock"></span>
 					  			</div>
 							</div>
-							@error('email')
-								<p class="invalid-feedback" >{{ $message }}</p>
-							@enderror
-				  		</div>
-				  		<div class="input-group mb-3">
-							<input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
+						</div>
+
+						<div class="input-group mb-3">
+							{{-- <label>Confirm Password</label> --}}
+							<input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
 							<div class="input-group-append">
 					  			<div class="input-group-text">
 									<span class="fas fa-lock"></span>
 					  			</div>
 							</div>
-							@error('password')
-								<p class="invalid-feedback" >  {{ $message }}</p>
-							@enderror
-				  		</div>
-				  		<div class="row">
-							<!-- <div class="col-8">
-					  			<div class="icheck-primary">
-									<input type="checkbox" id="remember">
-									<label for="remember">
-						  				Remember Me
-									</label>
-					  			</div>
-							</div> -->
-							<!-- /.col -->
-							<div class="col-4">
-					  			<button type="submit" class="btn btn-primary btn-block">Login</button>
-							</div>
-							<!-- /.col -->
-				  		</div>
+						</div>
+
+						<button type="submit" class="btn btn-outline-info w-100">Reset Password</button>
 					</form>
 		  			<p class="mb-1 mt-3">
-				  		<a class="text-info" href="{{ route('admin.forgotPasswordForm') }}">I forgot my password</a>
+				  		<a href="{{ route('admin.login') }}">Login</a>
 					</p>					
 			  	</div>
 			  	<!-- /.card-body -->

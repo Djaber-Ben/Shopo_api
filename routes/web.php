@@ -7,11 +7,18 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OfflinePaymentController;
 use App\Http\Controllers\Auth\Admin\AdminController;
 use App\Http\Controllers\SubscriptionPlanController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 // Route::group(['middleware' => 'guest'], function(){
     Route::get('/login',[AdminController::class, 'Login'])->name('admin.login');
     Route::post('/authenticate',[AdminController::class, 'authenticate'])->name('admin.authenticate');
+
+    // forgot / reset password
+    Route::get('/forgot-password-form', [ForgotPasswordController::class, 'forgotPasswordForm'])->name('admin.forgotPasswordForm');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('admin.forgotPassword');
+    Route::get('/reset-password-form', [ForgotPasswordController::class, 'resetPasswordForm'])->name('admin.resetPasswordForm');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('admin.resetPassword');
 // });
 
 Route::middleware(['admin'])->group(function () {
