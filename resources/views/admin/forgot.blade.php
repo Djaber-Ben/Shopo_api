@@ -58,6 +58,82 @@
 			</div>
 			<!-- /.card -->
 		</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const form = document.querySelector('form');
+		const button = form.querySelector('button[type="submit"]');
+		const input = form.querySelector('input[name="email"]');
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+
+			// Remove old alerts
+			document.querySelectorAll('.alert').forEach(el => el.remove());
+
+			// Disable button and input during submission
+			input.readOnly = true;
+			button.disabled = true;
+			button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
+
+			fetch(form.action, {
+				method: 'POST',
+				body: new FormData(form),
+				headers: {
+					'X-CSRF-TOKEN': '{{ csrf_token() }}'
+				}
+			})
+			.then(res => res.json())
+			.then(data => {
+				
+				if (data.status) {
+					button.innerHTML = `Reset Link already sent to your Email, click the button in your email message to reset password`;
+					// ✅ SUCCESS ALERT
+					showAlert('success', `<i class="icon fas fa-check"></i> ${data.message}`);
+					form.reset();
+				} else if (data.errors) {
+					// Inable button and input during submission
+					input.readOnly = false;
+					button.disabled = false;
+					button.innerHTML = `Send Password Reset Link to Email`;
+					// ⚠️ VALIDATION ERRORS
+					let messages = '';
+					for (const key in data.errors) {
+						messages += `<li>${data.errors[key][0]}</li>`;
+					}
+					showAlert('danger', `<i class="icon fas fa-exclamation-triangle"></i> Please fix the following errors:<ul>${messages}</ul>`);
+				} else {
+					// ❌ GENERIC ERROR
+					showAlert('danger', `<i class="icon fas fa-times"></i> Something went wrong. Please try again.`);
+				}
+			})
+			.catch(() => {
+				button.disabled = false;
+				button.innerHTML = `Send Password Reset Link to Email`;
+				showAlert('danger', `<i class="icon fas fa-wifi"></i> Network error. Please try again later.`);
+			});
+
+			function showAlert(type, message) {
+				const alert = document.createElement('div');
+				alert.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+				alert.innerHTML = `
+					${message}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				`;
+				form.insertAdjacentElement('beforebegin', alert);
+
+				// Auto remove after 5 seconds
+				setTimeout(() => {
+					$(alert).alert('close');
+				}, 5000);
+			}
+		});
+	});
+</script>
+
+
 		<!-- ./wrapper -->
 		<!-- jQuery -->
 		<script src="{{ asset('admin-assets/plugins/jquery/jquery.min.js') }}"></script>

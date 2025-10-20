@@ -31,7 +31,7 @@
 							</ul>
 						</div>
 					@endif --}}
-					<form method="POST" action="{{ route('admin.resetPassword') }}">
+					<form method="POST" id="resetForm" action="{{ route('admin.resetPassword') }}">
 						@csrf
 
 						<input type="hidden" name="token" value="{{ $token }}">
@@ -39,7 +39,7 @@
 
 						<div class="input-group mb-3">
 							{{-- <label>New Password</label> --}}
-							<input type="password" name="password" class="form-control" placeholder="New Password" required>
+							<input type="password" name="password" id="password" class="form-control" placeholder="New Password" required>
 							<div class="input-group-append">
 					  			<div class="input-group-text">
 									<span class="fas fa-unlock"></span>
@@ -49,7 +49,7 @@
 
 						<div class="input-group mb-3">
 							{{-- <label>Confirm Password</label> --}}
-							<input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
+							<input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm Password" required>
 							<div class="input-group-append">
 					  			<div class="input-group-text">
 									<span class="fas fa-lock"></span>
@@ -76,5 +76,92 @@
 		<script src="{{ asset('admin-assets/js/adminlte.min.js') }}"></script>
 		<!-- AdminLTE for demo purposes -->
 		{{-- <script src="{{ asset('admin-assets/js/demo.js') }}"></script> --}}
+		<script>
+			$(document).ready(function() {
+				$("#resetForm").submit(function(event) {
+					event.preventDefault();
+					var formData = $(this).serialize();
+					const button = $(this).find('button[type="submit"]');
+
+					button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Resetting...');
+
+					$.ajax({
+						url: "{{ route('admin.resetPassword') }}",
+						type: "POST",
+						data: formData,
+						dataType: "json",
+						success: function(response) {
+							handleResponse(response);
+						},
+						error: function(xhr) {
+							// Try to parse JSON even on error
+							let response;
+							try {
+								response = JSON.parse(xhr.responseText);
+							} catch (e) {
+								showAlert('danger', 'Unexpected server error. Please try again.');
+								return;
+							}
+							handleResponse(response);
+						},
+						complete: function() {
+							button.prop('disabled', false).html('Reset Password');
+						}
+					});
+
+					function handleResponse(response) {
+						// ✅ Success
+						if (response.status === true) {
+							window.location.href = "{{ route('admin.login') }}?reset=success";
+						}
+						// ⚠️ Validation errors
+						else if (response.errors) {
+							showValidationErrors(response.errors);
+						}
+						// ⚠️ Single message (like invalid token or expired)
+						else if (response.message) {
+							showAlert('danger', response.message);
+						}
+						// ❌ Unexpected
+						else {
+							showAlert('danger', 'Something went wrong. Please try again.');
+						}
+					}
+
+					function showValidationErrors(errors) {
+						// Clear old errors
+						$('.is-invalid').removeClass('is-invalid');
+						$('.invalid-feedback').remove();
+
+						// Loop and show each error
+						for (const field in errors) {
+							const input = $(`[name="${field}"]`);
+							input.addClass('is-invalid');
+							input.after(`<p class="invalid-feedback d-block">${errors[field][0]}</p>`);
+						}
+					}
+
+					function showAlert(type, message) {
+						// Remove old alert
+						$('.alert').remove();
+
+						const alertHtml = `
+							<div class="alert alert-${type} alert-dismissible fade show mt-3" role="alert">
+								<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+								${message}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						`;
+						$('.card-body').prepend(alertHtml);
+
+						// Auto close after 5 seconds
+						setTimeout(() => $('.alert').alert('close'), 5000);
+					}
+				});
+			});
+		</script>
+
 	</body>
 </html>

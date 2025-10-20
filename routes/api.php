@@ -16,8 +16,8 @@ use App\Http\Controllers\Api\SubscriptionPlanApiController;
 // User Authentication API
     Route::post('/register', [AuthController::class, 'registerClient']);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
+    // Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+    // Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
