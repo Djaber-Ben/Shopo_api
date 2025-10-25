@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\StoreSubscription;
@@ -32,6 +33,11 @@ class Store extends Model
         'instagram', 
         'tiktok'
     ];
+
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id');
+    }
 
     public function category()
     {

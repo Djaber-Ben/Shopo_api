@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key (int)
-            $table->foreignId('store_id')->constrained()->onDelete('cascade'); // Foreign key to stores table
+            $table->foreignId('store_id')->constrained('stores')->onDelete('cascade'); // Foreign key to stores table
             $table->string('title'); // String column for product title
             // $table->string('slug')->nullable()->unique(); // String column for slug, unique to avoid duplicates
             $table->string('image')->nullable(); // String column for primary image, nullable

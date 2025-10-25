@@ -95,40 +95,42 @@ class ProductApiController extends Controller
             ->where('vendor_id', Auth::id())
             ->firstOrFail();
 
-        // Create the product
-        $product = Product::create([
-            'store_id' => $request->store_id,
-            'title' => $request->title,
-            'image' => $request->hasFile('image') ? $request->file('image')->store('images/products/main', 'public') : null,
-            'description' => $request->description,
-            'related_products' => $request->related_products,
-            'price' => $request->price,
-            'compare_price' => $request->compare_price,
-            'qty' => $request->qty,
-            'track_qty' => $request->track_qty,
-            'status' => $request->status,
-        ]);
+        DB::beginTransaction();
 
-        // Store additional images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                if ($image->isValid()) {
-                    Images::create([
-                        'product_id' => $product->id,
-                        'image' => $image->store('images/products/sub', 'public'),
-                        'is_primary' => false,
-                    ]);
+        try {
+            // Create product
+            $product = Product::create([
+                'store_id' => $request->store_id,
+                'title' => $request->title,
+                'image' => $request->hasFile('image') ? $request->file('image')->store('images/products/main', 'public') : null,
+                'description' => $request->description,
+                'related_products' => $request->related_products,
+                'price' => $request->price,
+                'compare_price' => $request->compare_price,
+                'qty' => $request->qty,
+                'track_qty' => $request->track_qty,
+                'status' => $request->status,
+            ]);
+
+            // Store additional images
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    if ($image->isValid()) {
+                        Images::create([
+                            'product_id' => $product->id,
+                            'image' => $image->store('images/products/sub', 'public'),
+                            'is_primary' => false,
+                        ]);
+                    }
                 }
             }
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        // Load images relationship for response
-        $product->load('images');
-
-        return response()->json([
-            'message' => 'Product created successfully',
-            'product' => $product,
-        ], 201);
     }
 
     /**

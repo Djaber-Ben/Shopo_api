@@ -8,7 +8,9 @@ use App\Models\SubscriptionPlan;
 use App\Models\StoreSubscription;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\AdminNewSubscriptionNotification;
 
 class SubscriptionPlanApiController extends Controller
 {
@@ -85,12 +87,19 @@ class SubscriptionPlanApiController extends Controller
         $store = Store::where('vendor_id', Auth::id())->findOrFail($request->store_id);
         $plan = SubscriptionPlan::active()->findOrFail($request->subscription_plan_id);
 
-        // Optional: Prevent duplicate pending subscriptions
-        $existing = StoreSubscription::where('store_id', $store->id)
-            ->whereIn('status', ['pending'])
-            ->first();
+        // // Optional: Prevent duplicate pending subscriptions
+        // $existing = StoreSubscription::where('store_id', $store->id)
+        //     ->whereIn('status', ['pending'])
+        //     ->first();
+        
+        // if ($existing) {
+        //     return response()->json([
+        //         'message' => 'You already have an active or pending subscription for this store.',
+        //     ], 409);
+        // }
 
-        // recive the offline payment receipt image from the store owners
+        // recive and Upload the offline payment receipt image from the store owners
+        $payment_receipt_image = null;
         if ($request->hasFile('image')) {
             $payment_receipt_image = $request->file('image')
                 ->store('images/storeSubscriptions/payment_receipt_image', 'public');
@@ -102,6 +111,9 @@ class SubscriptionPlanApiController extends Controller
             'payment_receipt_image' => $payment_receipt_image,
             'status' => 'pending',
         ]);
+
+        // send email to admin
+        Mail::to('admin@mail.com')->send(new AdminNewSubscriptionNotification($store, $subscription));
 
         return response()->json([
             'message' => 'Store Subscription created successfully, It will be activated when the admin approves your Payment Receipt Image. ',

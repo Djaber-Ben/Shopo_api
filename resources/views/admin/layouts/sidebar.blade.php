@@ -53,12 +53,42 @@
                         </a>																
                     </li>
                     
-                    <li class="nav-item">
-                        {{-- <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"> --}}
+                    <li class="nav-item has-treeview {{ request()->is('settings/*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('settings/*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Settings
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('settings.contact') }}" class="nav-link {{ request()->routeIs('settings.contact') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Contact Us</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('settings.faq') }}" class="nav-link {{ request()->routeIs('settings.faq') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>FAQ</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('settings.about') }}" class="nav-link {{ request()->routeIs('settings.about') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>About Us</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    {{-- <li class="nav-item">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Users</p>
                         </a>
-                    </li>
+                    </li> --}}
                 {{-- <li class="nav-item">
                     <a href="pages.html" class="nav-link">
                         <i class="nav-icon  far fa-file-alt"></i>

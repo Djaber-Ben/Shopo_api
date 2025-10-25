@@ -74,5 +74,14 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'update'])->name('subscription-plans.update');
     Route::delete('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'destroy'])->name('subscription-plans.delete');
     ### Subscription plans ###
+
+
+    ### Subscription plans ###
+    Route::prefix('settings')->group(function () {
+        Route::get('/contact', [SettingController::class, 'contact'])->name('settings.contact');
+        Route::get('/faq', [SettingController::class, 'faq'])->name('settings.faq');
+        Route::get('/about', [SettingController::class, 'about'])->name('settings.about');
+    });
+
     
 });

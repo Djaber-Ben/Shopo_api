@@ -6,7 +6,9 @@ use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Models\SubscriptionPlan;
 use App\Models\StoreSubscription;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\StoreSubscriptionStatusUpdated;
 
 class StoreController extends Controller
 {
@@ -69,9 +71,15 @@ class StoreController extends Controller
                 'end_date' => $plan ? now()->addDays($plan->duration_days) : null,
             ]);
             $store->update(['subscription_expires_at' => $subscription->end_date]);
+
+            // Send email notification to the vendor
+            $vendor = $store->vendor; // relationship Store->vendor()
+            if ($vendor && $vendor->email) {
+                Mail::to($vendor->email)->send(new StoreSubscriptionStatusUpdated($store, $subscription, $vendor));
+            }
         }
 
-        $request->session()->flash('success', 'Store and subscription updated successfully.');
+        $request->session()->flash('success', 'Store and subscription status updated successfully.');
 
         return redirect()->back();
     }

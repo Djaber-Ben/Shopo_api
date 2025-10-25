@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\AdminNewSubscriptionNotification;
 
 class StoreApiController extends Controller
 {
@@ -293,6 +294,9 @@ class StoreApiController extends Controller
                     'payment_receipt_image' => $payment_receipt_image,
                     'status' => 'pending',
                 ]);
+
+                // send email to admin
+                Mail::to('admin@mail.com')->send(new AdminNewSubscriptionNotification($store, $subscription));
 
                 return response()->json([
                     'message' => 'Store and subscription created successfully, but the store is inactive and the subscription is pending. The admin will activate them once your payment receipt Image is approved.',
