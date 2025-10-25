@@ -11,7 +11,7 @@ class OfflinePaymentController extends Controller
     /**
      * Display the offline payment to the store owners via API.
      */
-    public function show($id)
+    public function show()
     {
         $payment = OfflinePayment::first();
 

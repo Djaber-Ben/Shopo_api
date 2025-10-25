@@ -53,7 +53,7 @@ use App\Http\Controllers\Api\SubscriptionPlanApiController;
         Route::get('/conversations/{id}/messages', [ConversationApiController::class, 'getMessages'])->name('conversations.messages');
 
         // Offline Payment API
-        Route::get('/offline-payments/{id}', [OfflinePaymentController::class, 'show'])->name('offline-payments.show');
+        Route::get('/offline-payments', [OfflinePaymentController::class, 'show'])->name('offline-payments.show');
         
         // Subscription plans API
         Route::get('/subscription-plans', [SubscriptionPlanApiController::class, 'index']);
