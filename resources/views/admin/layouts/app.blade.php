@@ -93,6 +93,10 @@
 		<!-- ./wrapper -->
 		<!-- jQuery -->
 		<script src="{{ asset('admin-assets/plugins/jquery/jquery.min.js') }}"></script>
+		
+		{{-- Install CKEditor 5  --}}
+		<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+		
 		<!-- Bootstrap 4 -->
 		<script src="{{ asset('admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 		<!-- AdminLTE App -->

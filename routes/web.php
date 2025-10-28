@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Faq;
+use App\Models\SiteInfo;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SiteInfoController;
 use App\Http\Controllers\OfflinePaymentController;
 use App\Http\Controllers\Auth\Admin\AdminController;
 use App\Http\Controllers\SubscriptionPlanController;
@@ -74,14 +78,49 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'update'])->name('subscription-plans.update');
     Route::delete('/subscription-plans/{plan}', [SubscriptionPlanController::class, 'destroy'])->name('subscription-plans.delete');
     ### Subscription plans ###
-
-
-    ### Subscription plans ###
-    Route::prefix('settings')->group(function () {
-        Route::get('/contact', [SettingController::class, 'contact'])->name('settings.contact');
-        Route::get('/faq', [SettingController::class, 'faq'])->name('settings.faq');
-        Route::get('/about', [SettingController::class, 'about'])->name('settings.about');
-    });
-
     
+    ### Site Info ###
+    Route::prefix('siteInfos')->name('siteInfos.')->group(function () {
+        Route::get('/', [SiteInfoController::class, 'index'])->name('index');
+        Route::get('/{key}/edit', [SiteInfoController::class, 'edit'])->name('edit');
+        Route::post('/{key}', [SiteInfoController::class, 'update'])->name('update');
+        
+        
+        // // Direct page routes
+        Route::get('/about', [SiteInfoController::class, 'about'])->name('about');
+        Route::get('/contact', [SiteInfoController::class, 'contact'])->name('contact');
+        // Route::get('/faq', [SiteInfoController::class, 'faq'])->name('faq');
+    });
+    ### FAQ ###
+    Route::get('faqs/', [FaqController::class, 'index'])->name('faqs.index');
+    Route::get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
+    Route::post('faqs/', [FaqController::class, 'store'])->name('faqs.store');
+    Route::get('faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
+    Route::put('faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+    Route::delete('faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+    
+    ### Site Info ###
+    // Route::prefix('siteInfos')->group(function () {
+        //     Route::get('/contact', [siteInfoController::class, 'contact'])->name('siteInfos.contact');
+        //     Route::get('/faq', [siteInfoController::class, 'faq'])->name('siteInfos.faq');
+        //     Route::get('/about', [siteInfoController::class, 'about'])->name('siteInfos.about');
+        // });
 });
+    
+    Route::get('/', function () {
+        // Fetch about and contact content
+        $about   = SiteInfo::where('key', 'about')->value('content');
+        $contact = SiteInfo::where('key', 'contact')->value('content');
+
+        // Fetch and decode FAQ JSON content
+        $faqs = Faq::all()->map(function ($faq) {
+            return json_decode($faq->content, true);
+        })->flatten(1);
+
+        return view('welcome', [
+            'title'   => 'Home',
+            'about'   => $about,
+            'contact' => $contact,
+            'faqs'    => $faqs,
+        ]);
+    });

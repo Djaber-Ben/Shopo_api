@@ -53,35 +53,42 @@
                         </a>																
                     </li>
                     
-                    <li class="nav-item has-treeview {{ request()->is('settings/*') ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ request()->is('settings/*') ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('siteInfos.index') }}" class="nav-link {{ request()->routeIs('siteInfos.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Site Info</p>
+                        </a>																
+                    </li>
+                    
+                    {{-- <li class="nav-item has-treeview {{ request()->is('siteInfos/*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('siteInfos/*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
-                                Settings
+                                Site Info
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('settings.contact') }}" class="nav-link {{ request()->routeIs('settings.contact') ? 'active' : '' }}">
+                                <a href="{{ route('siteInfos.contact') }}" class="nav-link {{ request()->routeIs('siteInfos.contact') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Contact Us</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('settings.faq') }}" class="nav-link {{ request()->routeIs('settings.faq') ? 'active' : '' }}">
+                                <a href="{{ route('siteInfos.faq') }}" class="nav-link {{ request()->routeIs('siteInfos.faq') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>FAQ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('settings.about') }}" class="nav-link {{ request()->routeIs('settings.about') ? 'active' : '' }}">
+                                <a href="{{ route('siteInfos.about') }}" class="nav-link {{ request()->routeIs('siteInfos.about') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>About Us</p>
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     
                     {{-- <li class="nav-item">
                         <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
