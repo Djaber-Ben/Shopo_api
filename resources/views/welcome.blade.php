@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="hero-image-wrapper">
-                    <img src="images/store.png" alt="Hero" class="hero-image">
+                    <img src={{ asset('front-assets/img/shopo.png') }} alt="Hero" class="hero-image">
                 </div>
             </div>
          </section>
@@ -81,7 +81,7 @@
           <section class="about-section" id="about">
             <div class="section-content">
                 <div class="about-image-wrapper">
-                    <img src="images/about-image.jpg" alt="About" class="about-image">
+                    <img src={{ asset('front-assets/img/shopo.jpg') }} alt="About" class="about-image">
                 </div>
                 <div class="about-details">
                     <h2 class="section-title">من نحن؟</h2>
@@ -101,33 +101,33 @@
             <div class="section-content">
                 <ul class="menu-list">
                     <li class="menu-item">
-                        <img src="images/hot-beverages.png" alt="hot" class="menu-image">
-                        <h3 class="name">hot beverages</h3>
+                        <img src={{ asset('front-assets/img/1.png') }} alt="hot" class="menu-image">
+                        <h3 class="name">hicham pizza</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                     <li class="menu-item">
-                        <img src="images/cold-beverages.png" alt="cold-beverages.png" class="menu-image">
-                        <h3 class="name">cold-beverages</h3>
+                        <img src={{ asset('front-assets/img/3.png') }} alt="cold-beverages.png" class="menu-image">
+                        <h3 class="name">hicham grill</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                     <li class="menu-item">
-                        <img src="images/refreshment.png" alt="refreshment.png" class="menu-image">
-                        <h3 class="name">refreshment</h3>
+                        <img src={{ asset('front-assets/img/2.jpeg') }} alt="refreshment.png" class="menu-image">
+                        <h3 class="name">el padre</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                     <li class="menu-item">
-                        <img src="images/special-combo.png" alt="special-combo.png" class="menu-image">
-                        <h3 class="name">special-combo</h3>
+                        <img src={{ asset('front-assets/img/4.png') }} alt="special-combo.png" class="menu-image">
+                        <h3 class="name">condor</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                     <li class="menu-item">
-                        <img src="images/burger-frenchfries.png" alt="burger-frenchfries.png" class="menu-image">
-                        <h3 class="name">burger-frenchfries</h3>
+                        <img src={{ asset('front-assets/img/5.png') }} alt="burger-frenchfries.png" class="menu-image">
+                        <h3 class="name">iris</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                     <li class="menu-item">
-                        <img src="images/desserts.png" alt="desserts.png" class="menu-image">
-                        <h3 class="name">desserts</h3>
+                        <img src={{ asset('front-assets/img/6.png') }} alt="desserts.png" class="menu-image">
+                        <h3 class="name">decathlon</h3>
                         <p class="text">wide range of stiming hot coffee</p>
                     </li>
                 </ul>
@@ -142,29 +142,29 @@
                     <div class="slider-wrapper">
                         <ul class="testimonials-list swiper-wrapper">
                             <li class="testimonial swiper-slide">
-                                <img src="images/user-1.jpg" alt="User" class="user-image">
-                                <h3 class="name">Sarah Jhonson</h3>
-                                <i class="feedback">"Love the Coffee, defently will order again"</i>
+                                <img src={{ asset('front-assets/img/f.jpg') }} alt="User" class="user-image">
+                                <h3 class="name">فوزي زواقري</h3>
+                                <i class="feedback">"تطبيق رائع"</i>
                             </li>
                             <li class="testimonial swiper-slide">
-                                <img src="images/user-2.jpg" alt="User" class="user-image">
-                                <h3 class="name">Sarah Jhonson</h3>
-                                <i class="feedback">"Love the Coffee, defently will order again"</i>
+                                <img src={{ asset('front-assets/img/d.jpg') }} alt="User" class="user-image">
+                                <h3 class="name">Djaber</h3>
+                                <i class="feedback">"coooooooooooooooooooooooool"</i>
                             </li>
                             <li class="testimonial swiper-slide">
-                                <img src="images/user-3.jpg" alt="User" class="user-image">
-                                <h3 class="name">Sarah Jhonson</h3>
-                                <i class="feedback">"Love the Coffee, defently will order again"</i>
+                                <img src={{ asset('front-assets/img/f.jpg') }} alt="User" class="user-image">
+                                <h3 class="name">فوزي زواقري</h3>
+                                <i class="feedback">"تطبيق رائع"</i>
                             </li>
                             <li class="testimonial swiper-slide">
-                                <img src="images/user-4.jpg" alt="User" class="user-image">
-                                <h3 class="name">Sarah Jhonson</h3>
-                                <i class="feedback">"Love the Coffee, defently will order again"</i>
-                            </li>
+                                <img src={{ asset('front-assets/img/d.jpg') }} alt="User" class="user-image">
+                                <h3 class="name">Djaber</h3>
+                                <i class="feedback">"coooooooooooooooooooooooool"</i>
                             <li class="testimonial swiper-slide">
-                                <img src="images/user-5.jpg" alt="User" class="user-image">
-                                <h3 class="name">Sarah Jhonson</h3>
-                                <i class="feedback">"Love the Coffee, defently will order again"</i>
+                                <img src={{ asset('front-assets/img/f.jpg') }} alt="User" class="user-image">
+                                <h3 class="name">فوزي زواقري</h3>
+                                <i class="feedback">"تطبيق رائع"</i>
+                            </li>
                             </li>
                         </ul>
 
@@ -210,62 +210,48 @@
                 <h2 class="section-title">الأسئلة الشائعة</h2>
                 <div class="section-content">
 
-                    <div id="questions-container" class="flex flex-col items-center gap-12 m-4">
-                        <div class="flex flex-col p-4 border-r rounded-lg shadow-slate-200 shadow-lg dark:shadow-mydarkShadow
-                            w-full md:w-[80%] lg:w-[50%] transition-all
-                            " style="border-right-color: #3b141c;">
-                            <div class="flex justify-between items-center cursor-pointer gap-4">
-                                <h3 class="text-sm sm:text-lg">ماهو نجيب؟</h3>
-                                <span style="color: #3b141c;">
-                                    <span chevron-icon="" style="color: #3b141c;">
-                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"></path>
-                                        </svg>
-                                    </span>
+                    {{-- <div id="questions-container" class="flex flex-col items-center gap-6">
+                        @foreach($faqs as $item)
+                        <div class="faq-item border p-4 rounded-lg shadow w-full md:w-3/4 bg-gray-50">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <h3 class="text-lg font-semibold">{{ $item['question'] }}</h3>
+                                <span>
+                                    <svg class="w-4 h-4 text-gray-700 rotate-0 transition-transform duration-200"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path d="M240.971 130.524l194.343 194.343c9.373 9.373 
+                                        9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 
+                                        9.375-33.901.04L224 227.495 69.255 381.516c-9.379 
+                                        9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-
+                                        9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-
+                                        9.373 24.568-9.373 33.941-.001z"/>
+                                    </svg>
                                 </span>
                             </div>
-                            <p class="pt-8 leading-loose text-secondary dark:text-darksecondary hidden">
-                                نجيب هو منصة تعليمية تقدم دورات وتدريب عبر الإنترنت لجميع المراحل الدراسية والمجالات، مع وجود أساتذة محترفين.
-                            </p>
+                            <p class="answer mt-3 hidden">{!! $item['answer'] !!}</p>
                         </div>
-                    </div>
+                        @endforeach
+                    </div> --}}
+
                     <div id="questions-container" class="flex flex-col items-center gap-12 m-4">
-                        <div class="flex flex-col p-4 border-r rounded-lg shadow-slate-200 shadow-lg dark:shadow-mydarkShadow
-                            w-full md:w-[80%] lg:w-[50%] transition-all
-                            " style="border-right-color: #3b141c;">
-                            <div class="flex justify-between items-center cursor-pointer gap-4">
-                                <h3 class="text-sm sm:text-lg">ماهو نجيب؟</h3>
-                                <span style="color: #3b141c;">
-                                    <span chevron-icon="" style="color: #3b141c;">
-                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"></path>
-                                        </svg>
+                        @foreach($faqs as $item)
+                            <div class="flex flex-col p-4 border-r rounded-lg shadow-slate-200 shadow-lg dark:shadow-mydarkShadow
+                                w-full md:w-[80%] lg:w-[50%] transition-all
+                                " style="border-right-color: #3b141c;">
+                                <div class="flex justify-between items-center cursor-pointer gap-4">
+                                    <h3 class="text-sm sm:text-lg">{{ $item['question'] }}</h3>
+                                    <span style="color: #3b141c;">
+                                        <span chevron-icon="" style="color: #3b141c;">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"></path>
+                                            </svg>
+                                        </span>
                                     </span>
-                                </span>
+                                </div>
+                                <p class="pt-8 leading-loose text-secondary dark:text-darksecondary hidden">
+                                {!! $item['answer'] !!}
+                                </p>
                             </div>
-                            <p class="pt-8 leading-loose text-secondary dark:text-darksecondary hidden">
-                                نجيب هو منصة تعليمية تقدم دورات وتدريب عبر الإنترنت لجميع المراحل الدراسية والمجالات، مع وجود أساتذة محترفين.
-                            </p>
-                        </div>
-                    </div>
-                    <div id="questions-container" class="flex flex-col items-center gap-12 m-4">
-                        <div class="flex flex-col p-4 border-r rounded-lg shadow-slate-200 shadow-lg dark:shadow-mydarkShadow
-                            w-full md:w-[80%] lg:w-[50%] transition-all
-                            " style="border-right-color: #3b141c;">
-                            <div class="flex justify-between items-center cursor-pointer gap-4">
-                                <h3 class="text-sm sm:text-lg">ماهو نجيب؟</h3>
-                                <span style="color: #3b141c;">
-                                    <span chevron-icon="" style="color: #3b141c;">
-                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"></path>
-                                        </svg>
-                                    </span>
-                                </span>
-                            </div>
-                            <p class="pt-8 leading-loose text-secondary dark:text-darksecondary hidden">
-                                نجيب هو منصة تعليمية تقدم دورات وتدريب عبر الإنترنت لجميع المراحل الدراسية والمجالات، مع وجود أساتذة محترفين.
-                            </p>
-                        </div>
+                        @endforeach
                     </div>
 
                     <!-- <div class="faq-container">
@@ -307,7 +293,7 @@
             <h2 class="section-title">اتصل بنا</h2>
             <div class="section-content">
                 <ul class="contact-info-list">
-                    {!! html_entity_decode($contact) !!}
+                    {!! html_entity_decode(str_replace('<br>', '', $contact)) !!}
                 </ul>
 
                 <form action="#" class="contact-form">
@@ -332,47 +318,7 @@
                 </div>
             </footer>
     </main>
-            <div class="container py-5">
-                <h1>Welcome to Our Site</h1>
-
-                {{-- About Section --}}
-                <section class="my-5">
-                    <h2>About Us</h2>
-                    <div>{!! $about !!}</div>
-                </section>
-
-                {{-- Contact Section --}}
-                <section class="my-5">
-                    <h2>Contact Us</h2>
-                    <div>{!! $contact !!}</div>
-                </section>
-
-                {{-- FAQ Section --}}
-                <section class="my-5">
-                    <h2>Frequently Asked Questions</h2>
-                    <div id="questions-container" class="flex flex-col items-center gap-6">
-                        @foreach($faqs as $item)
-                        <div class="faq-item border p-4 rounded-lg shadow w-full md:w-3/4 bg-gray-50">
-                            <div class="flex justify-between items-center cursor-pointer">
-                                <h3 class="text-lg font-semibold">{{ $item['question'] }}</h3>
-                                <span>
-                                    <svg class="w-4 h-4 text-gray-700 rotate-0 transition-transform duration-200"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M240.971 130.524l194.343 194.343c9.373 9.373 
-                                        9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 
-                                        9.375-33.901.04L224 227.495 69.255 381.516c-9.379 
-                                        9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-
-                                        9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-
-                                        9.373 24.568-9.373 33.941-.001z"/>
-                                    </svg>
-                                </span>
-                            </div>
-                            <p class="answer mt-3 hidden">{!! $item['answer'] !!}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </section>
-            </div>
+            
 
             <script>
             document.querySelectorAll('.faq-item').forEach(item => {
