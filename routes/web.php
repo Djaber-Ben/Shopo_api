@@ -113,9 +113,7 @@ Route::middleware(['admin'])->group(function () {
         $contact = SiteInfo::where('key', 'contact')->value('content');
 
         // Fetch and decode FAQ JSON content
-        $faqs = Faq::all()->map(function ($faq) {
-            return json_decode($faq->content, true);
-        })->flatten(1);
+        $faqs = Faq::latest()->get();
 
         return view('welcome', [
             'title'   => 'Home',

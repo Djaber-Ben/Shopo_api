@@ -50,7 +50,7 @@ class OfflinePaymentController extends Controller
             'family_name' => 'required|string|max:255',
             'ccp_number' => 'required|integer|min:1000000000|max:999999999999',
             'cle' => 'required|integer|min:0|max:999',
-            'rip' => 'required|integer|min:1000000000|max:999999999999',
+            'rip' => 'required|integer|min:1000000000|max:99999999999999999999',
             'address' => 'required|string|max:500',
         ]);
 

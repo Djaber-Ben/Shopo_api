@@ -103,14 +103,14 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Duration</h2>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label for="duration">Duration</label>
                                     <select name="duration" id="duration" class="form-control">
                                         <option value="daily" {{ old('duration') == 'daily' ? 'selected' : '' }}>Daily</option>
                                         <option value="monthly" {{ old('duration') == 'monthly' ? 'selected' : '' }}>Monthly</option>
                                         <option value="yearly" {{ old('duration') == 'yearly' ? 'selected' : '' }}>Yearly</option>
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <div class="mb-3">
                                     <label for="duration_days">Duration Days</label>

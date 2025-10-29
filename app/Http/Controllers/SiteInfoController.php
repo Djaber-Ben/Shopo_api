@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteInfo;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class SiteInfoController extends Controller
@@ -26,7 +27,12 @@ class SiteInfoController extends Controller
         ]);
 
         $siteInfo = SiteInfo::where('key', $key)->firstOrFail();
-        $siteInfo->update(['content' => $request->content]);
+        $cleanHtml = Str::of($request->content)
+            ->stripTags('<li><i><p><b><strong><em><br><a>')
+            ->toHtmlString();
+
+        $siteInfo->update(['content' => $cleanHtml]);
+        // $siteInfo->update(['content' => $request->content]);
 
         return redirect()->route('siteInfos.index')->with('success', ucfirst($key) . ' updated successfully!');
     }
