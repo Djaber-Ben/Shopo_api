@@ -6,10 +6,10 @@
     <div class="container-fluid my-2">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Edit Subscription Plan</h1>
+                <h1>تعديل خطة الإشتراك</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('subscription-plans.index') }}" class="btn btn-dark">Back</a>
+                <a href="{{ route('subscription-plans.index') }}" class="btn btn-dark" style="float: left !important">رجوع</a>
             </div>
         </div>
     </div>
@@ -35,27 +35,27 @@
                         <div class="card-body">
                             <!-- Name -->
                             <div class="mb-3">
-                                <label for="name">Plan Name</label>
+                                <label for="name">إسم</label>
                                 <input 
                                     type="text" 
                                     name="name" 
                                     id="name" 
                                     class="form-control @error('name') is-invalid @enderror"
                                     value="{{ old('name', $plan->name) }}" 
-                                    placeholder="Enter plan name">
+                                    placeholder="Enter إسم">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="description">Description</label>
+                                <label for="description">الوصف</label>
                                 <textarea 
                                     name="description" 
                                     id="description" 
                                     class="form-control @error('description') is-invalid @enderror" 
                                     {{-- class="summernote"  --}}
-                                    placeholder="Description"
+                                    placeholder="الوصف"
                                 >{{ old('description', $plan->description) }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -64,7 +64,7 @@
 
                             <!-- Price -->
                             <div class="mb-3">
-                                <label for="price">Price</label>
+                                <label for="price">السعر</label>
                                 <input 
                                     type="number" 
                                     name="price" 
@@ -72,7 +72,7 @@
                                     class="form-control @error('price') is-invalid @enderror"
                                     value="{{ old('price', $plan->price) }}" 
                                     step="0.01"
-                                    placeholder="Enter price">
+                                    placeholder="السعر">
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -80,7 +80,7 @@
 
                             <!-- Compare Price -->
                             <div class="mb-3">
-                                <label for="compare_price">Compare at Price</label>
+                                <label for="compare_price">السعر السابق</label>
                                 <input 
                                     type="number" 
                                     name="compare_price" 
@@ -88,7 +88,7 @@
                                     class="form-control @error('compare_price') is-invalid @enderror"
                                     value="{{ old('compare_price', $plan->compare_price) }}" 
                                     step="0.01"
-                                    placeholder="Enter compare price">
+                                    placeholder="السعر السابق">
                                 @error('compare_price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -102,7 +102,7 @@
                         <div class="card-body">
                             <!-- Duration -->
                             <div class="mb-3">
-                                <label for="duration">Duration</label>
+                                {{-- <label for="duration">Duration</label>
                                 <select 
                                     name="duration" 
                                     id="duration" 
@@ -114,18 +114,18 @@
                                 @error('duration')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Duration Days -->
                             <div class="mb-3">
-                                <label for="duration_days">Duration Days</label>
+                                <label for="duration_days">المدة بالأيام</label>
                                 <input 
                                     type="number" 
                                     name="duration_days" 
                                     id="duration_days" 
                                     class="form-control @error('duration_days') is-invalid @enderror"
                                     value="{{ old('duration_days', $plan->duration_days) }}"
-                                    placeholder="Enter duration in days">
+                                    placeholder="المدة بالأيام">
                                 @error('duration_days')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -143,22 +143,22 @@
                             </div> --}}
 
                             <div class="mb-3">
-                                <label for="is_trial">Is Trial</label>
+                                <label for="is_trial">نوع الخطة</label>
                                 <select name="is_trial" id="is_trial" class="form-control">
-                                    <option value="0" {{ old('is_trial', $plan->is_trial) == '0' ? 'selected' : '' }}>No</option>
-                                    <option value="1" {{ old('is_trial', $plan->is_trial) == '1' ? 'selected' : '' }}>Yes</option>
+                                    <option value="0" {{ old('is_trial', $plan->is_trial) == '0' ? 'selected' : '' }}>مدفوعة</option>
+                                    <option value="1" {{ old('is_trial', $plan->is_trial) == '1' ? 'selected' : '' }}>مجانية</option>
                                 </select>
                             </div>
 
                             <!-- Status -->
                             <div class="mb-3">
-                                <label for="status">Status</label>
+                                <label for="status">حالة خطة الإشتراك</label>
                                 <select 
                                     name="status" 
                                     id="status" 
                                     class="form-control @error('status') is-invalid @enderror">
-                                    <option value="active" {{ old('status', $plan->status) === 'active' ? 'selected' : '' }}>Active</option>
-                                    <option value="inactive" {{ old('status', $plan->status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                    <option value="active" {{ old('status', $plan->status) === 'active' ? 'selected' : '' }}>نشط</option>
+                                    <option value="inactive" {{ old('status', $plan->status) === 'inactive' ? 'selected' : '' }}>موقف</option>
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -167,11 +167,12 @@
                         </div>
                     </div>
 
-                    <!-- Submit -->
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-success">Update Plan</button>
-                    </div>
                 </div>
+            </div>
+            <!-- Submit -->
+            <div class="pb-5 pt-3 pl-2">
+                <button type="submit" class="btn btn-primary">تحديث</button>
+                <a href="{{ route('subscription-plans.index') }}" class="btn btn-outline-dark ml-3">إلغاء</a>
             </div>
         </form>
     </div>

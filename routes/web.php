@@ -8,13 +8,14 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SiteInfoController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OfflinePaymentController;
 use App\Http\Controllers\Auth\Admin\AdminController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
-// Route::group(['middleware' => 'guest'], function(){
+Route::middleware('guest.back')->group(function () {
     Route::get('/login',[AdminController::class, 'Login'])->name('admin.login');
     Route::post('/authenticate',[AdminController::class, 'authenticate'])->name('admin.authenticate');
 
@@ -23,11 +24,12 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
     Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('admin.forgotPassword');
     Route::get('/reset-password-form', [ForgotPasswordController::class, 'resetPasswordForm'])->name('admin.resetPasswordForm');
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('admin.resetPassword');
-// });
+});
 
 Route::middleware(['admin'])->group(function () {
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin', [DashboardController::class, 'stats'])->name('admin.dashboard');
 
     // Route::get('/admin/resetpassword', [ResetController::class, 'showResetForm'])->name('admin.user.resetpassword.form');
     // Route::post('/admin/resetpassword',[ResetController::class, 'ResetPassword'])->name('admin.user.resetpassword');

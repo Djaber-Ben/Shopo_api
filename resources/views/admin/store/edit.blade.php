@@ -6,10 +6,10 @@
     <div class="container-fluid my-2">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Edit Store</h1>
+                <h1>تعديل المتجر</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('stores.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('stores.index') }}" class="btn btn-primary" style="float: left !important">رجوع</a>
             </div>
         </div>
     </div>
@@ -62,21 +62,21 @@
                     <div class="card-header pt-3">
                         <div class="row invoice-info">
                             <div class="col-sm-12 invoice-col">
-                                <h1 class="h5 mb-3">store Info</h1>
+                                <h1 class="h5 mb-3">معلومات المتجر</h1>
                                 <p>
-                                    Name: <strong>{{ $store->store_name}}</strong><br>
-                                    Phone Number: <strong>{{ $store->phone_number }}</strong><br>
-                                    Address: <strong>{{ $store->address_url }}</strong><br>
-                                    Date Created:
+                                    الإسم: <strong>{{ $store->store_name}}</strong><br>
+                                    رقم الهاتف: <strong>{{ $store->phone_number }}</strong><br>
+                                    العنوان: <strong>{{ $store->address_url }}</strong><br>
+                                    تاريخ الإنشاء:
                                     <strong>
                                         @if (!empty($store->created_at))
-                                        {{ \Carbon\Carbon::parse($store->created_at)->format('d M, Y') }}
+                                        {{ \Carbon\Carbon::parse($store->created_at)->format('Y - M -  d') }}
                                         @else
                                         N/A
                                         @endif
                                     </strong>
                                     <br>
-                                    Store Status: <strong> {{ ($store->status) }}</strong>
+                                    حالة المتجر: <strong> {{ ($store->status) }}</strong>
                                 </p>
                             </div>
                             <div class="col-md-9">
@@ -94,28 +94,28 @@
                             <div class="col-sm-9 invoice-col">
                                 {{-- <div class="card"> --}}
                                     {{-- <div class="card-body"> --}}
-                                        <h1 class="h5 mb-3">Store Subscriptions</h1>
-                                        <b>Store Subscription ID:</b> {{ $store->subscriptions->first()->id ?? 'No Subscription' }}<br>
-                                        <b>Store Subscription Plan:</b> {{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}<br>
-                                        <b>Store Subscription Price:</b> {{ $store->subscriptions->first()->subscriptionPlan->price ?? 'No plan' }}<br>
-                                        <b>Subscription Plan Status:</b> {{ $store->subscriptions->first()->subscriptionPlan->status ?? 'No plan' }}<br>
-                                        <b>Store Subscription Payment Receipt Image:</b>
+                                        <h1 class="h5 mb-3">إشتراك المتجر</h1>
+                                        <b>رقم إشتراك المتجر:</b> {{ $store->subscriptions->first()->id ?? 'No Subscription' }}<br>
+                                        <b>خطة الإشتراك الخاصة بالمتجر:</b> {{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}<br>
+                                        <b>سعر خطة الإشتراك:</b> {{ $store->subscriptions->first()->subscriptionPlan->price ?? 'No plan' }}<br>
+                                        <b>الحالة الخاصة بخطة الإشتراك:</b> {{ $store->subscriptions->first()->subscriptionPlan->status ?? 'No plan' }}<br>
+                                        <b>صورة الوصل الخاصة بتسديد مستحقات إشتراك المتجر:</b>
                                             @if(!empty($store->subscriptions->first()->payment_receipt_image))
                                                 <div>
                                                     <img width="250" src="{{ asset('storage/'.$store->subscriptions->payment_receipt_image) }}" alt="">
                                                 </div>
                                             @endif
                                         <br>
-                                        <b>Store Subscription Status:</b>
+                                        <b>حالة إشتراك المتجر:</b>
                                             @if(!empty($store->subscriptions->first()->status))
                                                 @if ($store->subscriptions->first()->status == 'expired' ?? 'No Subscription')
-                                                    <span class="text-muted"><strong> Expired </strong></span>
+                                                    <span class="text-muted"><strong> منتهية الصلاحية </strong></span>
                                                 @elseif($store->subscriptions->first()->status == 'cancelled' ?? 'No Subscription')
-                                                    <span class="text-info"><strong> Cancelled </strong></span>
+                                                    <span class="text-info"><strong> ملغات </strong></span>
                                                 @elseif($store->subscriptions->first()->status == 'pending' ?? 'No Subscription')
-                                                    <span class="text-danger"><strong> Pending </strong></span>
+                                                    <span class="text-danger"><strong> قيد الإنتظار </strong></span>
                                                 @elseif($store->subscriptions->first()->status == 'active' ?? 'No Subscription')
-                                                    <span class="text-success"><strong> Active </strong></span>
+                                                    <span class="text-success"><strong> نشطة </strong></span>
                                                 @endif
                                             @endif
                                         <br>
@@ -133,27 +133,27 @@
                         @method('PUT')
                         <div class="card-body">
                             <div class="mb-3">
-                                <h2 class="h4 mb-3" for="status">Store Status</h2>   
+                                <h2 class="h4 mb-3" for="status">حالة المتجر</h2>   
                                 <select name="status" id="status" class="form-control">
-                                    <option value="active" {{ ($store->status == 'active') ? 'selected' : '' }}>Active</option>
-                                    <option value="inactive" {{ ($store->status == 'inactive') ? 'selected' : '' }}>Block</option>
+                                    <option value="active" {{ ($store->status == 'active') ? 'selected' : '' }}>نشط</option>
+                                    <option value="inactive" {{ ($store->status == 'inactive') ? 'selected' : '' }}>موقف</option>
                                 </select>
                                 <p></p>    
                             </div>
-                            <h2 class="h4 mb-3">Store Subscription Status</h2>
+                            <h2 class="h4 mb-3">حالة إشتراك المتجر</h2>
                             <div class="mb-3">
                                 <select name="subscription_status" class="form-control">
-                                    <option value="">Select a Store Subscription Status</option>
+                                    <option value="">حدد حالة إشتراك المتجر</option>
                                     @if(!empty($store->subscriptions->first()))
-                                        <option value="active" {{ $store->subscriptions->first()->status == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option value="pending" {{ $store->subscriptions->first()->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="cancelled" {{ $store->subscriptions->first()->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        <option value="active" {{ $store->subscriptions->first()->status == 'active' ? 'selected' : '' }}>نشطة</option>
+                                        <option value="pending" {{ $store->subscriptions->first()->status == 'pending' ? 'selected' : '' }}>قيد الإنتظار </option>
+                                        <option value="cancelled" {{ $store->subscriptions->first()->status == 'cancelled' ? 'selected' : '' }}>ملغات</option>
                                     @endif
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('stores.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                                <button type="submit" class="btn btn-primary">تحديث</button>
+                                <a href="{{ route('stores.index') }}" class="btn btn-outline-dark ml-3">إلغاء</a>
                             </div>
                         </div>
                     </form>

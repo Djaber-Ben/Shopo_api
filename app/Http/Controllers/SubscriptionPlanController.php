@@ -34,14 +34,23 @@ class SubscriptionPlanController extends Controller
             'name' => 'required|string|max:255|unique:subscription_plans,name',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0.00',
-            'compare_price' => 'nullable|numeric|min:0.00|gt:price',
+            'compare_price' => [
+                'nullable',
+                'numeric',
+                'min:0.00',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value !== null && $value <= $request->price) {
+                        $fail('السعر السابق يجب أن يكون أكبر من السعر الحالي.');
+                    }
+                },
+            ],
             // 'duration' => 'required|in:daily,monthly,yearly',
             'duration_days' => 'required|integer|min:1',
             'is_trial' => 'boolean',
             'status' => 'required|in:active,inactive',
         ], [
             'name.unique' => 'A plan with this name already exists.',
-            'duration.in' => 'Duration must be one of: daily, monthly, yearly.',
+            // 'duration.in' => 'Duration must be one of: daily, monthly, yearly.',
         ]);
 
         if ($validator->fails()) {
@@ -71,13 +80,23 @@ class SubscriptionPlanController extends Controller
             'name' => 'required|string|max:255|unique:subscription_plans,name,' . $plan->id,
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0.00',
+            'compare_price' => [
+                'nullable',
+                'numeric',
+                'min:0.00',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value !== null && $value <= $request->price) {
+                        $fail('السعر السابق يجب أن يكون أكبر من السعر الحالي.');
+                    }
+                },
+            ],
             // 'duration' => 'required|in:daily,monthly,quarterly,yearly',
             'duration_days' => 'required|integer|min:1',
             'is_trial' => 'boolean',
             'status' => 'required|in:active,inactive',
         ], [
             'name.unique' => 'A plan with this name already exists.',
-            'duration.in' => 'Duration must be one of: daily, monthly, yearly.',
+            // 'duration.in' => 'Duration must be one of: daily, monthly, yearly.',
         ]);
 
         if ($validator->fails()) {

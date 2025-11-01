@@ -3,9 +3,9 @@
 @section('content')
 <section class="content-header">
     <div class="container-fluid my-2">
-        <div class="row mb-2">
-            <div class="container mt-4">
-                <h4>Edit {{ ucfirst($siteInfo->key) }}</h4>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4 class="text-center">Edit {{ ucfirst($siteInfo->key) }}</h4>
 
                 @if(session('success'))
                     <div class="alert alert-success mt-3">{{ session('success') }}</div>

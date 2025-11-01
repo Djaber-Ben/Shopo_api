@@ -6,10 +6,10 @@
     <div class="container-fluid my-2">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Edit Payment Info</h1>
+                <h1>تعديل معلومات حساب الدفع</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('offline-payments.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('offline-payments.index') }}" class="btn btn-primary" style="float: left !important">رجوع</a>
             </div>
         </div>
     </div>
@@ -28,22 +28,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" value="{{ $payment->name }}" class="form-control" placeholder="Name">
+                                <label for="name">الإسم</label>
+                                <input type="text" name="name" id="name" value="{{ $payment->name }}" class="form-control" placeholder="الإسم">
                                 <p></p>    
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="family_name">Family Name</label>
-                                <input type="text" name="family_name" id="family_name" value="{{ $payment->family_name }}" class="form-control" placeholder="Family Name">
+                                <label for="family_name">اللقب</label>
+                                <input type="text" name="family_name" id="family_name" value="{{ $payment->family_name }}" class="form-control" placeholder="اللقب">
                                 <p></p>    
                             </div>
                         </div>                                     
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="ccp_number">CCP Number</label>
-                                <input type="text" name="ccp_number" id="ccp_number" value="{{ $payment->ccp_number }}" class="form-control" placeholder="CCP Number">
+                                <label for="ccp_number">CCP رقم</label>
+                                <input type="text" name="ccp_number" id="ccp_number" value="{{ $payment->ccp_number }}" class="form-control" placeholder="CCP رقم">
                                 <p></p>    
                             </div>
                         </div>
@@ -63,8 +63,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="address">Address</label>
-                                <input type="text" name="address" id="address" value="{{ $payment->address }}" class="form-control" placeholder="Address">
+                                <label for="address">العنوان</label>
+                                <input type="text" name="address" id="address" value="{{ $payment->address }}" class="form-control" placeholder="العنوان">
                                 <p></p>    
                             </div>
                         </div>
@@ -72,8 +72,8 @@
                 </div>                            
             </div>
             <div class="pb-5 pt-3">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('offline-payments.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                <button type="submit" class="btn btn-primary">تحديث</button>
+                <a href="{{ route('offline-payments.index') }}" class="btn btn-outline-dark ml-3">إلغاء</a>
             </div>
         </form>
     </div>

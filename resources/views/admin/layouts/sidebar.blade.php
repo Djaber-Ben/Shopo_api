@@ -14,50 +14,50 @@
                     <li class="nav-item">
                         <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>																
+                            <p>لوحة التحكم</p>
+                        </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a href="{{ route('sliders.index') }}" class="nav-link {{ request()->routeIs('sliders.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Slider</p>
-                        </a>																
+                            <i class="nav-icon fas fa-images"></i>
+                            <p>الشرائح</p>
+                        </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Category</p>
-                        </a>																
+                            <i class="nav-icon fas fa-layer-group"></i>
+                            <p>الفئات</p>
+                        </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a href="{{ route('stores.index') }}" class="nav-link {{ request()->routeIs('stores.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Store</p>
-                        </a>																
+                            <i class="nav-icon fas fa-store"></i>
+                            <p>المتاجر</p>
+                        </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a href="{{ route('offline-payments.index') }}" class="nav-link {{ request()->routeIs('offline-payments.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Payment Info</p>
-                        </a>																
+                            <i class="nav-icon fas fa-money-check-alt"></i>
+                            <p>معلومات الدفع</p>
+                        </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('subscription-plans.index') }}" class="nav-link {{ request()->routeIs('subscription-plans.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Subscription Plans</p>
-                        </a>																
+                            <i class="nav-icon fas fa-receipt"></i>
+                            <p>خطط الاشتراك</p>
+                        </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a href="{{ route('siteInfos.index') }}" class="nav-link {{ request()->routeIs('siteInfos.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-cog"></i>
-                            <p>Site Info</p>
-                        </a>																
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>معلومات الموقع</p>
+                        </a>
                     </li>
                     
                     {{-- <li class="nav-item has-treeview {{ request()->is('siteInfos/*') ? 'menu-open' : '' }}">

@@ -12,7 +12,7 @@ class SubscriptionPlan extends Model
     use HasFactory, SoftDeletes;
     
     protected $fillable = [
-        'name', 'description', 'price', 'duration', 'duration_days', 'is_trial', 'status'
+        'name', 'description', 'price', 'duration_days', 'is_trial', 'status'
     ];
 
     public function storeSubscriptions()

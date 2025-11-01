@@ -6,10 +6,10 @@
     <div class="container-fluid my-2">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Edit Slider</h1>
+                <h1>تعديل اللوحة</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('sliders.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('sliders.index') }}" class="btn btn-primary" style="float: left !important">رجوع</a>
             </div>
         </div>
     </div>
@@ -30,15 +30,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="title">Title</label>
-                                <input type="text" name="title" id="title" value="{{ $Slider->title }}" class="form-control" placeholder="Title">
+                                <label for="title">إسم</label>
+                                <input type="text" name="title" id="title" value="{{ $Slider->title }}" class="form-control" placeholder="إسم">
                                 <p></p>    
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="image">Image</label>
+                                <label for="image">صورة</label>
                                 <div id="imageUpload" class="dropzone"></div>
                                 <input type="hidden" name="image" id="image"> {{-- store filename --}}
                             </div>
@@ -51,18 +51,18 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="link">Link</label>    
-                                <input type="text" name="link" id="link" value="{{ $Slider->link }}" class="form-control" placeholder="Link">
+                                <label for="link">الرابط</label>    
+                                <input type="text" name="link" id="link" value="{{ $Slider->link }}" class="form-control" placeholder="الرابط">
                                 <p></p>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="status">Status</label>    
+                                <label for="status">الحالة</label>    
                                 <select name="status" id="status" class="form-control">
-                                    <option value="1" {{ ($Slider->status == '1') ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ ($Slider->status == '0') ? 'selected' : '' }}>Block</option>
+                                    <option value="1" {{ ($Slider->status == '1') ? 'selected' : '' }}>نشط</option>
+                                    <option value="0" {{ ($Slider->status == '0') ? 'selected' : '' }}>موقف</option>
                                 </select>
                             </div>
                         </div>
@@ -70,8 +70,8 @@
                 </div>                            
             </div>
             <div class="pb-5 pt-3">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('sliders.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                <button type="submit" class="btn btn-primary">تحديث</button>
+                <a href="{{ route('sliders.index') }}" class="btn btn-outline-dark ml-3">إلغاء</a>
             </div>
         </form>
     </div>
