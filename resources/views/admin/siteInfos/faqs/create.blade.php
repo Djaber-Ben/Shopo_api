@@ -1,31 +1,39 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Create FAQ</h1>
+<section class="content-header">
+    <div class="container-fluid my-2">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <h3>إنشاء الأسئلة الشائعة</h3>
+                {{-- <div class="container">
+                <h1>إنشاء الأسئلة الشائعة</h1> --}}
 
-    <form action="{{ route('faqs.store') }}" method="POST">
-        @csrf
+                <form action="{{ route('faqs.store') }}" method="POST">
+                    @csrf
 
-        <div id="faq-container">
-            <div class="faq-item border p-4 mb-4 rounded-lg bg-gray-50">
-                <div class="mb-3">
-                    <label for="question_0" class="form-label">Question</label>
-                    <input type="text" name="questions[]" id="question_0" class="form-control" placeholder="Enter a question" required>
-                </div>
+                    <div id="faq-container">
+                        <div class="faq-item border p-4 mb-4 rounded-lg bg-gray-50">
+                            <div class="mb-3">
+                                <label for="question_0" class="form-label">السؤال</label>
+                                <input type="text" name="questions[]" id="question_0" class="form-control" placeholder="Enter a question" required>
+                            </div>
 
-                <div class="mb-3">
-                    <label for="answer_0" class="form-label">Answer</label>
-                    <textarea name="answers[]" id="answer_0" class="form-control wysiwyg" rows="3" placeholder="Enter the answer"></textarea>
-                </div>
+                            <div class="mb-3">
+                                <label for="answer_0" class="form-label">الجواب</label>
+                                <textarea name="answers[]" id="answer_0" class="form-control wysiwyg" rows="3" placeholder="Enter the answer"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-faq" class="btn btn-secondary mb-3">+ إضافة سؤال آخر</button>
+                    <br>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                </form>
             </div>
         </div>
-
-        <button type="button" id="add-faq" class="btn btn-secondary mb-3">+ Add Another Question</button>
-        <br>
-        <button type="submit" class="btn btn-primary">Save FAQ</button>
-    </form>
-</div>
+    </div>
+</section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -45,11 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
         newItem.classList.add('faq-item', 'border', 'p-4', 'mb-4', 'rounded-lg', 'bg-gray-50');
         newItem.innerHTML = `
             <div class="mb-3">
-                <label for="question_${index}" class="form-label">Question</label>
+                <label for="question_${index}" class="form-label">السؤال</label>
                 <input type="text" name="questions[]" id="question_${index}" class="form-control" placeholder="Enter a question" required>
             </div>
             <div class="mb-3">
-                <label for="answer_${index}" class="form-label">Answer</label>
+                <label for="answer_${index}" class="form-label">الجواب</label>
                 <textarea name="answers[]" id="answer_${index}" class="form-control wysiwyg" rows="3" placeholder="Enter the answer" required></textarea>
             </div>
         `;
