@@ -35,12 +35,13 @@
                                 <p></p>    
                             </div>
                         </div>
-
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="image">صورة</label>
                                 <div id="imageUpload" class="dropzone"></div>
                                 <input type="hidden" name="image" id="image"> {{-- store filename --}}
+                                <p></p>    
                             </div>
                                 @if(!empty($Slider->slider_image))
                                     <div>
@@ -148,6 +149,15 @@ $("#sliderForm").submit(function(event){
                         .addClass('invalid-feedback').html(errors.image);
                 } else {
                     $('#image').removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback').html("");
+                }
+                if(errors.link){
+                    $('#link').addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback').html(errors.link);
+                } else {
+                    $('#link').removeClass('is-invalid')
                         .siblings('p')
                         .removeClass('invalid-feedback').html("");
                 }

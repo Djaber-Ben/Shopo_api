@@ -79,7 +79,7 @@ class StoreController extends Controller
             }
         }
 
-        $request->session()->flash('success', 'Store and subscription status updated successfully.');
+        $request->session()->flash('success', 'تم تحديث حالة المتجر والاشتراك بنجاح.');
 
         return redirect()->back();
     }

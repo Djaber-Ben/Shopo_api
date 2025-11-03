@@ -46,7 +46,7 @@
                                 <th width="100">شعار</th>
                                 <th width="100">حالة المتجر</th>
                                 <th width="100">إسم الخطة</th>
-                                <th width="100">حالة الخطة</th>
+                                <th width="100">حالة إشتراك المتجر</th>
                                 <th width="50">تنفيذ</th>
                             </tr>
                         </thead>
@@ -76,7 +76,19 @@
                                             @endif
                                         </td>
                                         <td>{{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}</td>
-                                        <td>{{ $store->subscriptions->first()->status ?? 'No subscription' }}</td>
+                                        <td>
+                                            @if(!empty($store->subscriptions->first()->status))
+                                                @if ($store->subscriptions->first()->status == 'expired' ?? 'No Subscription')
+                                                    <span class="bg-muted p-1 rounded d-inline-block"><strong> منتهية الصلاحية </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'cancelled' ?? 'No Subscription')
+                                                    <span class="bg-info p-1 rounded d-inline-block"><strong> ملغات </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'pending' ?? 'No Subscription')
+                                                    <span class="bg-danger p-1 rounded d-inline-block"><strong> قيد الإنتظار </strong></span>
+                                                @elseif($store->subscriptions->first()->status == 'active' ?? 'No Subscription')
+                                                    <span class="bg-success p-1 rounded d-inline-block"><strong> نشطة </strong></span>
+                                                @endif
+                                            @endif
+                                        </td>
                                         <td>
                                             {{-- <div class="d-flex gap-6"> --}}
                                                 <a href="{{ route('stores.edit',$store->id) }}" class="btn btn-sm btn-primary">

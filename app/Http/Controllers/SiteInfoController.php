@@ -34,7 +34,7 @@ class SiteInfoController extends Controller
         $siteInfo->update(['content' => $cleanHtml]);
         // $siteInfo->update(['content' => $request->content]);
 
-        return redirect()->route('siteInfos.index')->with('success', ucfirst($key) . ' updated successfully!');
+        return redirect()->route('siteInfos.index')->with('success', ucfirst($key) . 'تم التحديث بنجاح!');
     }
 
     // Convenience shortcuts

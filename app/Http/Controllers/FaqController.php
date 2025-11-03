@@ -44,7 +44,7 @@ class FaqController extends Controller
 
     // Faq::insert($faqs);
 
-        return redirect()->route('faqs.index')->with('success', 'FAQs created successfully.');
+        return redirect()->route('faqs.index')->with('success', 'تم إنشاء الأسئلة الشائعة بنجاح.');
     }
 
     public function edit(Faq $faq)
@@ -61,7 +61,7 @@ class FaqController extends Controller
 
         $faq->update($request->only('question', 'answer'));
 
-        return redirect()->route('faqs.index')->with('success', 'FAQ updated successfully.');
+        return redirect()->route('faqs.index')->with('success', 'تم تحديث الأسئلة الشائعة بنجاح.');
     }
 
     public function destroy(Faq $faq)
@@ -70,6 +70,6 @@ class FaqController extends Controller
 
         return redirect()
             ->route('faqs.index')
-            ->with('success', 'FAQ deleted successfully.');
+            ->with('success', 'تم حذف الأسئلة الشائعة بنجاح.');
     }
 }

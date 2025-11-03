@@ -18,6 +18,7 @@
 </section>
 <!-- Main content -->
 <section class="content">
+    @include('admin.message')
     <!-- Default box -->
     <div class="container-fluid">
         <form>

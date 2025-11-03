@@ -7,9 +7,10 @@
             <div class="col-md-8">
                 <h4 class="text-center">Edit {{ ucfirst($siteInfo->key) }}</h4>
 
-                @if(session('success'))
+                {{-- @if(session('success'))
                     <div class="alert alert-success mt-3">{{ session('success') }}</div>
-                @endif
+                @endif --}}
+                @include('admin.message')
 
                 <form action="{{ route('siteInfos.update', $siteInfo->key) }}" method="POST">
                     @csrf

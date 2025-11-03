@@ -60,7 +60,7 @@ class SubscriptionPlanController extends Controller
         SubscriptionPlan::create($request->all());
 
         return redirect()->route('subscription-plans.index')
-                         ->with('success', 'Subscription plan created successfully.');
+                         ->with('success', 'تم إنشاء خطة الاشتراك بنجاح.');
     }
 
     /**
@@ -106,7 +106,7 @@ class SubscriptionPlanController extends Controller
         $plan->update($request->all());
 
         return redirect()->route('subscription-plans.index')
-                         ->with('success', 'Subscription plan updated successfully.');
+                         ->with('success', 'تم تحديث خطة الاشتراك بنجاح.');
     }
 
     /**
@@ -122,6 +122,6 @@ class SubscriptionPlanController extends Controller
         $plan->delete();
 
         return redirect()->route('subscription-plans.index')
-                         ->with('success', 'Subscription plan deleted successfully.');
+                         ->with('success', 'تم حذف خطة الاشتراك بنجاح.');
     }
 }

@@ -24,6 +24,7 @@ class Store extends Model
         'image', 
         'phone_number', 
         'address', 
+        'address_url', 
         'latitude', 
         'longitude', 
         'status', 

@@ -96,6 +96,14 @@ input, textarea, select {
   left: 10px !important;    /* Move it to the left side */
 }
 
+/* Move the close button to the left for RTL layout */
+[dir="rtl"] .alert .close,
+html[lang="ar"] .alert .close {
+    float: left;
+    right: auto;
+    left: 10px;
+}
+
 .small-box .icon > i {
   left: 15px;
   right: auto;

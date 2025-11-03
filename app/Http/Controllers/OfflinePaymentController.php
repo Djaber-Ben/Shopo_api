@@ -67,6 +67,7 @@ class OfflinePaymentController extends Controller
             $request->only(['name', 'family_name', 'ccp_number', 'cle', 'rip', 'address'])
         );
 
+        $request->session()->flash('success', 'تم تحديث تفاصيل حساب الدفع بنجاح.');
         return response()->json([
             'status' => true,
             'message' => 'Payment details updated successfully',

@@ -14,6 +14,8 @@ use App\Models\StoreSubscription;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\AdminNewSubscriptionNotification;
@@ -105,21 +107,109 @@ class StoreApiController extends Controller
     }
     
     // Extract lat/lng from the Google Maps link
-    public function extractCoordinates($mapUrl)
-    {
-        // Match patterns like @40.7128,-74.0060 or q=40.7128,-74.0060
-        if (preg_match('/@(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches) ||
-            preg_match('/q=(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches)) {
-            $latitude = (float) $matches[1];
-            $longitude = (float) $matches[2];
+    // public function extractCoordinates($mapUrl)
+    // {
+    //     // Match patterns like @40.7128,-74.0060 or q=40.7128,-74.0060
+    //     if (preg_match('/@(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches) ||
+    //         preg_match('/q=(-?\d+\.\d{1,8}),(-?\d+\.\d{1,8})/', $mapUrl, $matches)) {
+    //         $latitude = (float) $matches[1];
+    //         $longitude = (float) $matches[2];
 
-            // Validate coordinate ranges
-            if ($latitude >= -90 && $latitude <= 90 && $longitude >= -180 && $longitude <= 180) {
-                return [
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
-                ];
+    //         // Validate coordinate ranges
+    //         if ($latitude >= -90 && $latitude <= 90 && $longitude >= -180 && $longitude <= 180) {
+    //             return [
+    //                 'latitude' => $latitude,
+    //                 'longitude' => $longitude,
+    //             ];
+    //         }
+    //     }
+    //     return null;
+    // }
+
+    // if (! function_exists('extractCoordinatesFromGoogleMapsUrl')) {
+    /**
+     * Extract latitude and longitude from any Google Maps URL.
+     *
+     * @param  string  $url
+     * @return array|null  ['lat' => float, 'lng' => float] or null if not found
+     */
+    public function extractCoordinatesFromGoogleMapsUrl(string $url): ?array
+{
+        $cacheKey = 'coords_' . md5($url);
+
+        // ✅ Check cache first
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        Log::info('🔗 Original URL:', ['url' => $url]);
+
+        // 1️⃣ Expand shortened URLs
+        $expandedUrl = self::expandUrl($url);
+        Log::info('🌐 Expanded URL:', ['expanded_url' => $expandedUrl]);
+
+        // 2️⃣ Try to extract coordinates from the URL
+        $coords = self::extractFromUrl($expandedUrl);
+        if ($coords) {
+            Cache::put($cacheKey, $coords, now()->addDays(7));
+            return $coords;
+        }
+
+        // 3️⃣ If not found, scrape the HTML page
+        $coords = self::extractFromPage($expandedUrl);
+        if ($coords) {
+            Cache::put($cacheKey, $coords, now()->addDays(7));
+            return $coords;
+        }
+
+        Log::warning('⚠️ Coordinates not found for URL:', ['checked_url' => $expandedUrl]);
+        return null;
+    }
+
+    protected static function expandUrl(string $url): string
+    {
+        try {
+            $headers = get_headers($url, 1);
+            if (isset($headers['Location'])) {
+                return is_array($headers['Location']) ? end($headers['Location']) : $headers['Location'];
             }
+        } catch (\Exception $e) {
+            Log::error('Failed to expand URL', ['error' => $e->getMessage()]);
+        }
+        return $url;
+    }
+
+    protected static function extractFromUrl(string $url): ?array
+    {
+        // Match patterns like @36.12345,3.56789
+        if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $url, $m)) {
+            return ['lat' => $m[1], 'lng' => $m[2]];
+        }
+
+        // Match patterns like !3d36.12345!4d3.56789
+        if (preg_match('/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/', $url, $m)) {
+            return ['lat' => $m[1], 'lng' => $m[2]];
+        }
+
+        return null;
+    }
+
+    protected static function extractFromPage(string $url): ?array
+    {
+        try {
+            $html = @file_get_contents($url);
+            if (!$html) return null;
+
+            // Look for coordinates in the page source
+            if (preg_match('/"latitude":([\-0-9.]+),"longitude":([\-0-9.]+)/', $html, $m)) {
+                return ['lat' => $m[1], 'lng' => $m[2]];
+            }
+
+            if (preg_match('/center=([\-0-9.]+),([\-0-9.]+)/', $html, $m)) {
+                return ['lat' => $m[1], 'lng' => $m[2]];
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to scrape page', ['error' => $e->getMessage()]);
         }
         return null;
     }
@@ -163,6 +253,7 @@ class StoreApiController extends Controller
                 'required',
                 Rule::exists('subscription_plans', 'id')->where('status', 'active'),
             ],
+
             // store subscription
             'payment_receipt_image' => [
                 'nullable',
@@ -176,18 +267,49 @@ class StoreApiController extends Controller
                     }
                 },
             ],
+
             'category_id' => 'required|exists:categories,id',
             'store_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
+            'phone_number' => 'required|string|max:13',
             'address' => 'required|string|max:500',
-            'address_url' => 'required|url|max:500|regex:/^https:\/\/(www\.google\.com\/maps|maps\.app\.goo\.gl|goo\.gl\/maps|apple\.com\/maps)/',
+
+            // ✅ Fixed double escaping inside regex rules
+            'address_url' => [
+                'required',
+                'url',
+                'max:500',
+                'regex:/^https:\\/\\/(www\\.google\\.com\\/maps|maps\\.app\\.goo\\.gl|goo\\.gl\\/maps|apple\\.com\\/maps)/'
+            ],
+
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'whatsapp' => 'nullable|url|max:255|regex:/^https:\/\/(wa\.me|api\.whatsapp\.com)/',
-            'facebook' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?facebook\.com/',
-            'instagram' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?instagram\.com/',
-            'tiktok' => 'nullable|url|max:255|regex:/^https:\/\/(www\.)?tiktok\.com/',
+
+            // ✅ Social link regexes (correctly escaped)
+            'whatsapp' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(wa\\.me|api\\.whatsapp\\.com|web\\.whatsapp\\.com)/'
+            ],
+            'facebook' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?facebook\\.com/'
+            ],
+            'instagram' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?instagram\\.com/'
+            ],
+            'tiktok' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?tiktok\\.com/'
+            ],
         ], [
             'subscription_plan_id.exists' => 'The selected subscription plan is invalid or not active.',
             'address_url.regex' => 'The address URL must be a valid Google Maps URL.',
@@ -221,9 +343,9 @@ class StoreApiController extends Controller
         
         // Extract lat/lng from the Google Maps link
         // Then save to the store
-        $coords = $this->extractCoordinates($request->address_url);
-        $latitude = $coords['latitude'] ?? null;
-        $longitude = $coords['longitude'] ?? null;
+        $coords = $this->extractCoordinatesFromGoogleMapsUrl($request->address_url);
+        $latitude = $coords['lat'] ?? null;
+        $longitude = $coords['lng'] ?? null;
 
         try{
             // Create the store
@@ -345,20 +467,52 @@ class StoreApiController extends Controller
 
         // Validate the request
         $validator = Validator::make($request->all(), [
-            'category_id' => 'sometimes|exists:categories,id',
-            'store_name' => 'sometimes|string|max:255',
-            'phone_number' => 'sometimes|string|max:20',
-            'address' => 'sometimes|string|max:500',
-            'address_url' => 'sometimes|url|max:500',
-            // 'latitude' => 'sometimes|numeric|between:-90,90',
-            // 'longitude' => 'sometimes|numeric|between:-180,180',
+            'category_id' => 'required|exists:categories,id',
+            'store_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:13',
+            'address' => 'required|string|max:500',
+            'address_url' => [
+                'required',
+                'url',
+                'max:500',
+                'regex:/^https:\\/\\/(www\\.google\\.com\\/maps|maps\\.app\\.goo\\.gl|goo\\.gl\\/maps|apple\\.com\\/maps)/'
+            ],
+
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'whatsapp' => 'nullable|url|max:255',
-            'facebook' => 'nullable|url|max:255',
-            'instagram' => 'nullable|url|max:255',
-            'tiktok' => 'nullable|url|max:255',
+
+            // ✅ Social link regexes (correctly escaped)
+            'whatsapp' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(wa\\.me|api\\.whatsapp\\.com|web\\.whatsapp\\.com)/'
+            ],
+            'facebook' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?facebook\\.com/'
+            ],
+            'instagram' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?instagram\\.com/'
+            ],
+            'tiktok' => [
+                'nullable',
+                'url',
+                'max:255',
+                'regex:/^https:\\/\\/(www\\.)?tiktok\\.com/'
+            ],
+        ], [
+            'address_url.regex' => 'The address URL must be a valid Google Maps URL.',
+            'whatsapp.regex' => 'The WhatsApp URL must be a valid WhatsApp link.',
+            'facebook.regex' => 'The Facebook URL must be a valid Facebook link.',
+            'instagram.regex' => 'The Instagram URL must be a valid Instagram link.',
+            'tiktok.regex' => 'The TikTok URL must be a valid TikTok link.',
         ]);
 
         if ($validator->fails()) {
@@ -369,10 +523,10 @@ class StoreApiController extends Controller
 
         // Extract lat/lng from the Google Maps link
         // Then save to the store
-        $coords = $this->extractCoordinates($request->address_url);
+        $coords = $this->extractCoordinatesFromGoogleMapsUrl($request->address_url);
         if ($coords) {
-            $store->latitude = $coords['latitude'];
-            $store->longitude = $coords['longitude'];
+            $store->latitude = $coords['lat'] ?? null;
+            $store->longitude = $coords['lng'] ?? null;
         }
 
         // Prepare data for update

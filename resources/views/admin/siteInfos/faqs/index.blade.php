@@ -9,9 +9,10 @@
                 {{-- <h3>FAQ List</h3> --}}
                 <a href="{{ route('faqs.create') }}" class="btn btn-primary mb-3">إنشاء أسئلة جديدة</a>
 
-                @if(session('success'))
+                {{-- @if(session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
+                @endif --}}
+                @include('admin.message')
 
                 <table class="table table-bordered table-striped">
                     <thead>
