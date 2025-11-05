@@ -90,38 +90,44 @@
                 </div>
                 <div class="card">
                     <div class="card-header pt-3">
-                        <div class="row invoice-info">
-                            <div class="col-sm-9 invoice-col">
-                                {{-- <div class="card"> --}}
-                                    {{-- <div class="card-body"> --}}
-                                        <h1 class="h5 mb-3">إشتراك المتجر</h1>
-                                        <b>رقم إشتراك المتجر:</b> {{ $store->subscriptions->first()->id ?? 'No Subscription' }}<br>
-                                        <b>خطة الإشتراك الخاصة بالمتجر:</b> {{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}<br>
-                                        <b>سعر خطة الإشتراك:</b> {{ $store->subscriptions->first()->subscriptionPlan->price ?? 'No plan' }}<br>
-                                        <b>الحالة الخاصة بخطة الإشتراك:</b> {{ $store->subscriptions->first()->subscriptionPlan->status ?? 'No plan' }}<br>
-                                        <b>صورة الوصل الخاصة بتسديد مستحقات إشتراك المتجر:</b>
-                                            @if(!empty($store->subscriptions->first()->payment_receipt_image))
-                                                <div>
-                                                    <img width="250" src="{{ asset('storage/'.$store->subscriptions->payment_receipt_image) }}" alt="">
-                                                </div>
-                                            @endif
+                        <div class="invoice-info text-right" style="line-height: 2;"> {{-- increases space between lines --}}
+                            <h1 class="h5 mb-4 text-center">إشتراك المتجر</h1>
+
+                            <b>رقم إشتراك المتجر:</b> {{ $store->latestSubscription?->id ?? 'لا يوجد اشتراك' }}<br>
+                            <b>خطة الإشتراك الخاصة بالمتجر:</b> {{ $store->latestSubscription?->subscriptionPlan?->name ?? 'لا يوجد خطة' }}<br>
+                            <b>سعر خطة الإشتراك:</b> {{ $store->latestSubscription?->subscriptionPlan?->price ?? 'لا يوجد خطة' }}<br>
+                            <b>الحالة الخاصة بخطة الإشتراك:</b> {{ $store->latestSubscription?->subscriptionPlan?->status ?? 'لا يوجد خطة' }}<br>
+
+                            <b>صورة الوصل الخاصة بتسديد مستحقات إشتراك المتجر:</b>
+                            @if(!empty($store->latestSubscription?->payment_receipt_image))
+                                <div class="text-center my-3"> {{-- centers and adds vertical margin --}}
+                                    <img 
+                                        width="250" 
+                                        class="img-fluid rounded shadow-sm" 
+                                        src="{{ asset('storage/'.$store->latestSubscription->payment_receipt_image) }}" 
+                                        alt="صورة وصل الدفع"
+                                    >
+                                </div>
+                            @else
+                                <p class="text-muted text-center mt-3">لا توجد صورة وصل متاحة</p>
+                            @endif
                                         <br>
                                         <b>حالة إشتراك المتجر:</b>
-                                            @if(!empty($store->subscriptions->first()->status))
-                                                @if ($store->subscriptions->first()->status == 'expired' ?? 'No Subscription')
-                                                    <span class="text-muted"><strong> منتهية الصلاحية </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'cancelled' ?? 'No Subscription')
-                                                    <span class="text-info"><strong> ملغات </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'pending' ?? 'No Subscription')
-                                                    <span class="text-danger"><strong> قيد الإنتظار </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'active' ?? 'No Subscription')
-                                                    <span class="text-success"><strong> نشطة </strong></span>
+                                            @if(!empty($store->latestSubscription->status))
+                                                @if ($store->latestSubscription->status == 'expired' ?? 'No Subscription')
+                                                    <span class="bg-muted p-1 rounded d-inline-block"><strong> منتهية الصلاحية </strong></span>
+                                                @elseif($store->latestSubscription->status == 'cancelled' ?? 'No Subscription')
+                                                    <span class="bg-info p-1 rounded d-inline-block"><strong> ملغات </strong></span>
+                                                @elseif($store->latestSubscription->status == 'pending' ?? 'No Subscription')
+                                                    <span class="bg-danger p-1 rounded d-inline-block"><strong> قيد الإنتظار </strong></span>
+                                                @elseif($store->latestSubscription->status == 'active' ?? 'No Subscription')
+                                                    <span class="bg-success p-1 rounded d-inline-block"><strong> نشطة </strong></span>
                                                 @endif
                                             @endif
                                         <br>
                                     {{-- </div> --}}
                                 {{-- </div> --}}
-                            </div>
+                            {{-- </div> --}}
                         </div>
                     </div>
                 </div>
@@ -144,10 +150,10 @@
                             <div class="mb-3">
                                 <select name="subscription_status" class="form-control">
                                     <option value="">حدد حالة إشتراك المتجر</option>
-                                    @if(!empty($store->subscriptions->first()))
-                                        <option value="active" {{ $store->subscriptions->first()->status == 'active' ? 'selected' : '' }}>نشطة</option>
-                                        <option value="pending" {{ $store->subscriptions->first()->status == 'pending' ? 'selected' : '' }}>قيد الإنتظار </option>
-                                        <option value="cancelled" {{ $store->subscriptions->first()->status == 'cancelled' ? 'selected' : '' }}>ملغات</option>
+                                    @if(!empty($store->latestSubscription))
+                                        <option value="active" {{ $store->latestSubscription->status == 'active' ? 'selected' : '' }}>نشطة</option>
+                                        <option value="pending" {{ $store->latestSubscription->status == 'pending' ? 'selected' : '' }}>قيد الإنتظار </option>
+                                        <option value="cancelled" {{ $store->latestSubscription->status == 'cancelled' ? 'selected' : '' }}>ملغات</option>
                                     @endif
                                 </select>
                             </div>

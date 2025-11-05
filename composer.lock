@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f387a0734f3bf879214e4aa2fca6e2f",
+    "content-hash": "b7ef3d981ef534a53de450feee570bf3",
     "packages": [
+        {
+            "name": "bogdaan/open-location-code",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bogdaan/open-location-code.git",
+                "reference": "6e384e41cc6d6dd4d87f95c36aabf0de5256bf3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bogdaan/open-location-code/zipball/6e384e41cc6d6dd4d87f95c36aabf0de5256bf3f",
+                "reference": "6e384e41cc6d6dd4d87f95c36aabf0de5256bf3f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenLocationCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Novikov Bogdan",
+                    "email": "hcbogdan@gmail.com",
+                    "homepage": "http://hcbogdan.com"
+                }
+            ],
+            "description": "Open location code for php",
+            "keywords": [
+                "olc",
+                "open location code",
+                "plus.codes"
+            ],
+            "support": {
+                "issues": "https://github.com/Bogdaan/open-location-code/issues",
+                "source": "https://github.com/Bogdaan/open-location-code/tree/master"
+            },
+            "time": "2018-02-03T16:15:27+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.14.0",
@@ -8527,7 +8578,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bogdaan/open-location-code": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

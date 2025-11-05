@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\SubscriptionPlanApiController;
         // Stores API
         Route::get('/store/create', [StoreApiController::class, 'create'])->name('store.create');
         Route::post('/store/store', [StoreApiController::class, 'store'])->name('store.store');
+        Route::post('/store/test', [StoreApiController::class, 'test']);
         Route::get('/store/{id}', [StoreApiController::class, 'edit'])->name('store.edit');
         Route::put('/store/{id}', [StoreApiController::class, 'update'])->name('store.update');
         Route::delete('/store/{id}', [StoreApiController::class, 'destroy'])->name('store.destroy');

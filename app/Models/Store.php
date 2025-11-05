@@ -50,8 +50,19 @@ class Store extends Model
         return $this->hasMany(Product::class);
     }
 
+    // public function subscriptions()
+    // {
+    //     return $this->hasMany(StoreSubscription::class);
+    // }
+
     public function subscriptions()
     {
-        return $this->hasMany(StoreSubscription::class);
+        return $this->hasMany(StoreSubscription::class)->orderByDesc('created_at');
     }
+
+    public function latestSubscription()
+    {
+        return $this->hasOne(StoreSubscription::class)->latestOfMany();
+    }
+
 }

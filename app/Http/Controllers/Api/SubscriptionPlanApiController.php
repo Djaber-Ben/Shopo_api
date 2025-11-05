@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Models\SubscriptionPlan;
@@ -23,6 +24,12 @@ class SubscriptionPlanApiController extends Controller
 
         // Get the vendor's store
         $store = $user->store ?? null;
+ 
+        if (!$store) {
+            return response()->json([
+                'message' => 'You must have a store to view subscription plans.'
+            ], 403);
+        }
 
         // Start with all active plans
         $plansQuery = SubscriptionPlan::where('status', 'active');
@@ -87,21 +94,21 @@ class SubscriptionPlanApiController extends Controller
         $store = Store::where('vendor_id', Auth::id())->findOrFail($request->store_id);
         $plan = SubscriptionPlan::active()->findOrFail($request->subscription_plan_id);
 
-        // // Optional: Prevent duplicate pending subscriptions
-        // $existing = StoreSubscription::where('store_id', $store->id)
-        //     ->whereIn('status', ['pending'])
-        //     ->first();
+        // Optional: Prevent duplicate pending subscriptions
+        $existing = StoreSubscription::where('store_id', $store->id)
+            ->whereIn('status', ['pending'])
+            ->first();
         
-        // if ($existing) {
-        //     return response()->json([
-        //         'message' => 'You already have an active or pending subscription for this store.',
-        //     ], 409);
-        // }
+        if ($existing) {
+            return response()->json([
+                'message' => 'You already have an active or pending subscription for this store.',
+            ], 409);
+        }
 
         // recive and Upload the offline payment receipt image from the store owners
         $payment_receipt_image = null;
-        if ($request->hasFile('image')) {
-            $payment_receipt_image = $request->file('image')
+        if ($request->hasFile('payment_receipt_image')) {
+            $payment_receipt_image = $request->file('payment_receipt_image')
                 ->store('images/storeSubscriptions/payment_receipt_image', 'public');
         }
                 
@@ -112,8 +119,11 @@ class SubscriptionPlanApiController extends Controller
             'status' => 'pending',
         ]);
 
-        // send email to admin
-        Mail::to('admin@mail.com')->send(new AdminNewSubscriptionNotification($store, $subscription));
+        // Send email to admin
+        $admin = User::where('user_type', 'admin')->first();
+        if ($admin) {
+            Mail::to($admin->email)->send(new AdminNewSubscriptionNotification($store, $subscription));
+        }
 
         return response()->json([
             'message' => 'Store Subscription created successfully, It will be activated when the admin approves your Payment Receipt Image. ',

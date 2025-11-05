@@ -16,11 +16,11 @@ class StoreController extends Controller
     {
         $keyword = $request->get('keyword');
 
-        $stores = Store::with(['subscriptions.subscriptionPlan'])
+        $stores = Store::with(['latestSubscription.subscriptionPlan'])
             ->when($keyword, function ($query, $keyword) {
                 $query->where('store_name', 'like', "%{$keyword}%")
                     ->orWhere('id', $keyword)
-                    ->orWhereHas('subscriptions', function ($q) use ($keyword) {
+                    ->orWhereHas('latestSubscription', function ($q) use ($keyword) {
                         $q->where('status', 'like', "%{$keyword}%")
                             ->orWhereHas('subscriptionPlan', function ($qp) use ($keyword) {
                                 $qp->where('name', 'like', "%{$keyword}%");

@@ -75,16 +75,16 @@
                                                 </svg>
                                             @endif
                                         </td>
-                                        <td>{{ $store->subscriptions->first()->subscriptionPlan->name ?? 'No plan' }}</td>
+                                        <td>{{ $store->latestSubscription?->subscriptionPlan?->name ?? 'No plan' }}</td>
                                         <td>
-                                            @if(!empty($store->subscriptions->first()->status))
-                                                @if ($store->subscriptions->first()->status == 'expired' ?? 'No Subscription')
-                                                    <span class="bg-muted p-1 rounded d-inline-block"><strong> منتهية الصلاحية </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'cancelled' ?? 'No Subscription')
+                                            @if(!empty($store->latestSubscription->status))
+                                                @if ($store->latestSubscription->status == 'expired' ?? 'No Subscription')
+                                                    <span class="bg-secondary p-1 rounded d-inline-block"><strong> منتهية الصلاحية </strong></span>
+                                                @elseif($store->latestSubscription->status == 'cancelled' ?? 'No Subscription')
                                                     <span class="bg-info p-1 rounded d-inline-block"><strong> ملغات </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'pending' ?? 'No Subscription')
+                                                @elseif($store->latestSubscription->status == 'pending' ?? 'No Subscription')
                                                     <span class="bg-danger p-1 rounded d-inline-block"><strong> قيد الإنتظار </strong></span>
-                                                @elseif($store->subscriptions->first()->status == 'active' ?? 'No Subscription')
+                                                @elseif($store->latestSubscription->status == 'active' ?? 'No Subscription')
                                                     <span class="bg-success p-1 rounded d-inline-block"><strong> نشطة </strong></span>
                                                 @endif
                                             @endif

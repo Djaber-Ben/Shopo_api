@@ -11,7 +11,7 @@
 
     <ul>
         <li><strong>Store ID:</strong> {{ $store->id }}</li>
-        <li><strong>Store Name:</strong> {{ $store->name }}</li>
+        <li><strong>Store Name:</strong> {{ $store->store_name }}</li>
         <li><strong>Store Status:</strong> {{ ucfirst($store->status) }}</li>
         <li><strong>Subscription ID:</strong> {{ $subscription->id }}</li>
         <li><strong>Subscription Plan:</strong> {{ $subscription->subscriptionPlan->name ?? 'N/A' }}</li>

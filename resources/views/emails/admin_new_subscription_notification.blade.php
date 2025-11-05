@@ -10,7 +10,7 @@
 
     <ul>
         <li><strong>Store ID:</strong> {{ $store->id }}</li>
-        <li><strong>Store Name:</strong> {{ $store->name }}</li>
+        <li><strong>Store Name:</strong> {{ $store->store_name }}</li>
         {{-- <li><strong>Status:</strong> {{ ucfirst($subscription->status) }}</li> --}}
     </ul>
 

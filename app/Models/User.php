@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Store;
 use App\Models\Wishlist;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'user_type', 'logo', 'image', 'phone_number',
     ];
+
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'vendor_id');
+    }
 
     public function wishlist()
     {

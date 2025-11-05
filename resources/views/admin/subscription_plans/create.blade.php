@@ -85,7 +85,7 @@
                                         type="number" 
                                         name="compare_price" 
                                         id="compare_price" 
-                                        class="form-control" 
+                                        class="form-control @error('compare_price') is-invalid @enderror" 
                                         value="{{ old('compare_price') }}" 
                                         placeholder="السعر السابق"
                                     >

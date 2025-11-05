@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Store;
 use App\Models\Category;
+use App\Helpers\MapHelper;
 use Illuminate\Http\Request;
 use App\Models\OfflinePayment;
 use Illuminate\Validation\Rule;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -125,6 +128,24 @@ class StoreApiController extends Controller
     //     }
     //     return null;
     // }
+
+    public function test(Request $request)
+{
+    // $coords = MapHelper::extractCoordinatesFromGoogleMapsUrl($request->input('url'));
+    $coords = MapHelper::extractCoordinates($request->input('url'));
+
+    if ($coords) {
+        return response()->json([
+            'status' => 'success',
+            'coordinates' => $coords
+        ]);
+    }
+
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Coordinates not found'
+    ]);
+}
 
     // if (! function_exists('extractCoordinatesFromGoogleMapsUrl')) {
     /**
@@ -417,8 +438,11 @@ class StoreApiController extends Controller
                     'status' => 'pending',
                 ]);
 
-                // send email to admin
-                Mail::to('admin@mail.com')->send(new AdminNewSubscriptionNotification($store, $subscription));
+                // Send email to admin
+                $admin = User::where('user_type', 'admin')->first();
+                if ($admin) {
+                    Mail::to($admin->email)->send(new AdminNewSubscriptionNotification($store, $subscription));
+                }
 
                 return response()->json([
                     'message' => 'Store and subscription created successfully, but the store is inactive and the subscription is pending. The admin will activate them once your payment receipt Image is approved.',
