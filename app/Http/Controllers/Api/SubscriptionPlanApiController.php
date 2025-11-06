@@ -84,7 +84,19 @@ class SubscriptionPlanApiController extends Controller
         $validator = Validator::make($request->all(), [
             'store_id' => 'required|exists:stores,id',
             'subscription_plan_id' => 'required|exists:subscription_plans,id',
-            'payment_receipt_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            // store subscription
+            'payment_receipt_image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:2048',
+                function ($attribute, $value, $fail) use ($request) {
+                    $plan = SubscriptionPlan::find($request->subscription_plan_id);
+                    if ($plan && !$plan->is_trial && !$request->hasFile('payment_receipt_image')) {
+                        $fail('The payment receipt image is required for non-trial plans.');
+                    }
+                },
+            ],
         ]);
 
         if ($validator->fails()) {

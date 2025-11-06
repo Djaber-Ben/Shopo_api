@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Laravel Shop :: Administrative Panel</title>
+		<title>Shopo :: اللوحة الإدارية</title>
 		<!-- Google Font: Source Sans Pro -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 		<!-- Font Awesome -->
@@ -18,10 +18,10 @@
 			{{-- @include('admin.message') --}}
 			<div class="card card-outline card-warning">
 			  	<div class="card-header text-center">
-					<a  class="h3 on-hover text-warning">Forgot Password ?</a>
+					<a  class="h3 on-hover text-warning">هل نسيت كلمة السر ؟</a>
 			  	</div>
 			  	<div class="card-body">
-					<p class="login-box-msg">enter your email to reset new password</p>
+					<p class="login-box-msg">أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور الجديدة</p>
 					{{-- @if ($errors->any())
 						<div class="alert alert-danger">
 							<ul>
@@ -46,12 +46,12 @@
 				  		</div>
 				  		<div class="row">
 							<div class="col-12">
-					  			<button type="submit" class="btn btn-outline-warning btn-block">send Password reset link to email</button>
+					  			<button type="submit" class="btn btn-outline-warning btn-block">إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني</button>
 							</div>
 				  		</div>
 					</form>
 		  			<p class="mb-1 mt-3">
-				  		<a href="{{ route('admin.login') }}">Login</a>
+				  		<a href="{{ route('admin.login') }}">تسجيل الدخول</a>
 					</p>					
 			  	</div>
 			  	<!-- /.card-body -->
