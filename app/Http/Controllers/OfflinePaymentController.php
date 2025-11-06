@@ -48,9 +48,9 @@ class OfflinePaymentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'family_name' => 'required|string|max:255',
-            'ccp_number' => 'required|integer|min:1000000000|max:999999999999',
-            'cle' => 'required|integer|min:0|max:999',
-            'rip' => 'required|integer|min:1000000000|max:99999999999999999999',
+            'ccp_number' => 'required|numeric|digits_between:9,12',
+            'cle' => 'required|numeric|digits_between:1,3',
+            'rip' => 'required|numeric|digits_between:20,24',
             'address' => 'required|string|max:500',
         ]);
 

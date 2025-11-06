@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('family_name');
             $table->bigInteger('ccp_number');
             $table->integer('cle');
-            $table->bigInteger('rip');
+            $table->string('rip');
             $table->string('address');
             $table->timestamps();
             $table->softDeletes();
